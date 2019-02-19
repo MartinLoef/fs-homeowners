@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-md-center">
+    <div class="col-md-10">
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Is_Staff</th>
+                    <th scope="col">Last_Login</th>
+                    <th scope="col">Is_Active</th>
+                    <th scope="col">Date_Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{user.id}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.is_staff}}</td>
+                    <td>{{user.last_login}}</td>
+                    <td>{{user.is_active}}</td>
+                    <td>{{user.date_joined}}</td>
+                    <td><a href="/" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Suspend</a></td>
+                    <td><a href="/" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Activate</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <span class="pull-right">
+            <a href="{% url 'registration' %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Add an User</a>
+        </span>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
