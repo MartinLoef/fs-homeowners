@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Overview{% endblock %}
+
+{% block page_heading %}Overview{% endblock %}
+{% block content %}
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+          <h4 class="card-title">Upcoming events</h4><hr>  
+    </div>
+</div>
+{% for up in upcoming_events %}
+    <div class="row justify-content-md-center">
+        <div class="col-md-2 row-striped text-left">
+            <h1 class="display"><span class="badge badge-primary">{{up.scheduled_date_start|date:"d"}}</span> {{up.scheduled_date_start|date:"b"|title}}</h1>
+            <!--<h2>{{up.scheduled_date_start|date:"b"}}</h2>-->
+        </div>
+        <div class="col-md-6 row-striped">
+            <h3 class="text-uppercase"><strong>{{up.title}}</strong></h3>
+            <ul class="list-inline">
+                <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{up.scheduled_date_start|date:"D"}}</li>
+                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{up.scheduled_date_start|date:"P"}} - {{up.scheduled_date_end|date:"P"}}</li>
+                <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{up.location}}</li>
+                <li class="list-inline-item"><i class="fa fa-money" aria-hidden="true"></i> {{up.price}}</li>
+            </ul>
+            <p>{{up.details|truncatewords:30}}</p>
+        </div>
+    </div>
+    <br>
+{% endfor %}
+
+
+<br>
+<div class="row justify-content-md-center">
+    <div class="col-md-4">
+          <h4 class="card-title">Latest Post</h4><hr>  
+    </div>
+    <div class="col-md-4">
+        <h4 class="card-title">Newest Event</h4><hr>    
+    </div>
+</div>
+
+
+{% for post in posts %}
+    <div class="row justify-content-md-center">
+    <div class="col-md-4">
+        <div class="card flex-row flex-wrap">
+            <div class="card-header event_image border-0">
+                <img class="card-img-left" src="{{ MEDIA_URL }}{{ post.image }}" alt="Card image cap">
+            </div>
+            <div class="card-block px-2">
+                <h4 class="card-title">{{post.title}}</h4><hr>
+                <footer class="blockquote-footer">By: {{post.author}} <cite title="Source Title">on {{post.published_date}}</cite></footer><hr>
+                <p class="card-text">{{post.content|truncatewords:12}}</p>
+                <a href="{% url 'post_detail' post.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read More</a>
+            </div>
+            <div class="card-footer w-100 text-muted">
+                <span>comments:</span>
+                <span class="badge badge-success">{{ post.reaction_post.count }}</span>
+                <span class="float-right">views: <span class="badge badge-success">{{post.views}}</span></span><br>
+            </div>
+        
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+    {% for event in events %}
+    <div class="col-md-4">
+        <div class="card flex-row flex-wrap">
+            <div class="card-header event_image border-0">
+                <img class="card-img-left" src="{{ MEDIA_URL }}{{ event.event_image }}" alt="Card image cap">
+            </div>
+            <div class="card-block px-2">
+                <h4 class="card-title">{{event.title}}</h4><hr>
+                <footer class="blockquote-footer">By: {{event.author}} <cite title="Source Title">on {{event.published_date}}</cite></footer><hr>
+                <p class="card-text">{{event.details|truncatewords:12}}</p>
+                <a href="{% url 'event_detail' event.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read More</a>
+            </div>
+            <div class="card-footer w-100 text-muted">
+                <span>comments:</span>
+                <span class="badge badge-success">{{ event.comment_event.count }}</span>
+                <span class="float-right">views: <span class="badge badge-success">{{event.views}}</span></span><br>
+            </div>
+        
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+</div>
+
+{% endblock %}

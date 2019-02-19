@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ user }}'s Profile{% endblock %}
+
+{% block page_heading %}{{ user }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <form method='POST' enctype="multipart/form-data" class="form">
+            <p>{{ profile.profile_image }}</p>
+            <p>{{ profile.name }}</p>
+            <p>{{ profile.phonenumber }}</p>
+            <p>{{ user.email }}</p>
+            <button type='submit'>Update</button>
+        </form>
+        <p><a href="{% url 'password_reset' %}">reset my password</a></p>
+    </div>
+</div>
+
+{% endblock %}
