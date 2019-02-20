@@ -6,7 +6,7 @@ class Blog(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="blog_author")
     title = models.CharField(max_length=200)
     content = models.TextField()
-    published_date = models.DateTimeField(blank=True, null=True, default=timezone.now)
+    published_date = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0)
     
     def __str__(self):
@@ -18,8 +18,6 @@ class BlogComment(models.Model):
     authorid = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment_author")
     blog_comment = models.CharField(max_length=125)
     created_date = models.DateTimeField(auto_now_add=True)
-    views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
 
     def __str__(self):
         return "BlogCommentID: {0} / User: {1} / Date: {2}".format(
