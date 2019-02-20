@@ -6,6 +6,9 @@
     <div class="row justify-content-md-center">
     <div class="col-md-6">
         <div class="card flex-row flex-wrap">
+            <div class="card-header event_image border-0">
+                <img class="card-img-left" src="{{ MEDIA_URL }}{{ blog.blog_image }}" alt="Card image cap">
+            </div>
             <div class="card-block px-2">
                 <h4 class="card-title">{{blog.title}}</h4><hr>
                 <footer class="blockquote-footer">By: {{blog.author}} <cite title="Source Title">on {{blog.published_date}}</cite></footer><hr>
