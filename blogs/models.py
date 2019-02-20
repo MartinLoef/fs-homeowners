@@ -11,7 +11,7 @@ class Blog(models.Model):
     
     def __str__(self):
         return "BlogID: {0} / User: {1} / Date: {2} / Title: {3}".format(
-            self.id, self.authorid, self.created_date, self.title)
+            self.id, self.author, self.published_date, self.title)
 
 class BlogComment(models.Model):
     blogid = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="comment_blog")
