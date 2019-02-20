@@ -13,6 +13,7 @@ from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from accounts.models import UserProfile
 from accounts.forms import UserProfileForm
+from blogs.models import Blog, BlogComment
 from django.utils import timezone
 
 # Create your views here.
@@ -25,7 +26,11 @@ def index(request):
 
 def overview(request):
     """return overview.html"""
-    return render(request, "overview.html")
+    """return overview.html"""
+    blogs = Blog.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
+    comments = BlogComment.objects.all()
+    return render(request, "overview.html", {'blogs': blogs, 'comments': comments, })
+
     
 def logout(request):
     """log user out"""

@@ -8,6 +8,7 @@ class Blog(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0)
+    blog_image = models.ImageField(upload_to="images", blank=True, null=True)
     
     def __str__(self):
         return "BlogID: {0} / User: {1} / Date: {2} / Title: {3}".format(
