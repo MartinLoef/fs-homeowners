@@ -24,11 +24,16 @@
   <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
       <span class="navbar-brand mb-0 h1">Commonhold</span>
       <ul class="navbar-nav mr-auto">
-          {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
           <li class="nav-item active">
               <a class="nav-link" href="{% url 'overview' %}">Home</a>
           </li>
-          
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'get_blogs' %}">Blogs</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'get_events' %}">Events</a>
+          </li>
           {% endif %}
       </ul>
   </div>
