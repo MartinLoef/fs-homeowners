@@ -14,6 +14,7 @@ from django.core.mail import EmailMessage
 from accounts.models import UserProfile
 from accounts.forms import UserProfileForm
 from blogs.models import Blog, BlogComment
+from events.models import Event, EventComment
 from django.utils import timezone
 
 # Create your views here.
@@ -28,8 +29,10 @@ def overview(request):
     """return overview.html"""
     """return overview.html"""
     blogs = Blog.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
-    comments = BlogComment.objects.all()
-    return render(request, "overview.html", {'blogs': blogs, 'comments': comments, })
+    events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
+    blog_comments = BlogComment.objects.all()
+    event_comments = EventComment.objects.all()
+    return render(request, "overview.html", {'blogs': blogs, 'events': events,  'event_comments': event_comments, 'blog_comments': blog_comments })
 
     
 def logout(request):
