@@ -14,7 +14,30 @@ def get_blogs(request):
 
 def blog_like(request, pk):
     """blogdetail.html"""
-    return redirect(blog_detail)
+    blog = get_object_or_404(Blog, pk=pk)
+    comments = BlogComment.objects.filter(blogid=pk)
+    users = User.objects.all()
+    blogid = Blog.objects.get(pk=pk)
+    userid = User.objects.get(pk=request.user.id)
+    
+    likes = BlogLike.objects.filter(BlogLikeId=pk)
+    comment_form = BlogCommentForm()
+    
+    if likes:
+        for like in likes:
+            if like.BlogLikedBy == userid:
+                BlogLike.objects.filter(BlogLikeId=blogid, BlogLikedBy=userid).delete()
+                thumb = False
+            else:
+                BlogLike.objects.create(BlogLikeId=blogid, BlogLikedBy=userid) 
+                thumb = True
+    else:
+        BlogLike.objects.create(BlogLikeId=blogid, BlogLikedBy=userid)
+        thumb = True
+    likes = BlogLike.objects.filter(BlogLikeId=pk)
+
+    return render(request, "blogdetail.html", {'comment_form': comment_form, 'blog':blog, 'comments': comments, 'users': users, 'likes': likes, 'thumb': thumb })
+
     
 def blog_detail(request, pk):
     """blogdetail.html"""
