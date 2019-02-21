@@ -8,13 +8,11 @@ class Event(models.Model):
     details = models.TextField()
     location = models.CharField(max_length=200)
     views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     event_image = models.ImageField(upload_to="images", null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
     scheduled_date_start = models.DateTimeField(blank=True, null=True)
     scheduled_date_end = models.DateTimeField(blank=True, null=True)
-    published_date = models.DateTimeField(blank=True, null=True, default=timezone.now)
+    published_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.title
@@ -26,7 +24,8 @@ class EventComment(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content_reaction
+        return "EventCommentId: {0} / EventID: {1} / User: {2}".format(
+            self.id, self.eventid, self.author)
 
 class EventLike(models.Model):
     EventLikeId = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_like_id")
