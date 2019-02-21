@@ -30,4 +30,4 @@ class BlogLike(models.Model):
     
     def __int__(self):
         return "BlogLikeId: {0} / BlogID: {1} / User: {2}".format(
-            self.id, self.BlogLikeId, self.user)
+            self.id, self.BlogLikeId, self.BlogLikedBy)

@@ -24,7 +24,7 @@
     <div class="col-md-4">
         <div class="card flex-row flex-wrap">
             <div class="card-header event_image border-0">
-                <img class="card-img-left" src="{{ MEDIA_URL }}{{ blog.blog_image }}" alt="Card image cap">
+                <img class="card-img-left" src="{{ MEDIA_URL }}{{ blog.blog_image }}" alt="blog image description">
             </div>
             <div class="card-block px-2">
                 <h4 class="card-title">{{blog.title}}</h4><hr>
@@ -32,6 +32,7 @@
                 <p class="card-text">{{blog.content|truncatewords:12}}</p>
                 <a href="{% url 'blog_detail' blog.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read More</a>
             </div>
+
             <div class="card-footer w-100 text-muted">
                 <span>comments:</span>
                 <span class="badge badge-success">{{ blog.comment_blog.count }}</span>
@@ -42,7 +43,6 @@
     </div>
     <br>
     {% endfor %}
-    
 </div>
 
 {% endblock %}
