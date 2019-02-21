@@ -2,87 +2,31 @@
 {% load bootstrap_tags %}
 {% block content %}
     <div class="row justify-content-md-center">
-        <div class="col-md-6">
-            <div class="panel-group">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="card">
-                            <div class="card-header">
-                                <span class="panel-title">{{blog.title}}
-                                <span class="pull-right">
-                                    {% if user.is_authenticated and user == blog.author or user.is_superuser %}
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm login-btn new-post buy dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Select Action<span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a id='post_links' href="{% url 'edit_blog' blog.id %}">Edit Blog</a></li>
-                                            <li><a id='post_links' href="{% url 'edit_blog' blog.id %}">Delete Blog</a></li>
-                                            
-                                        </ul>
-                                    </div>
-                                    {% endif %}
-                                </span>
-                                </span>
-                                
-                            </div>
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0">
-                                    <p>{{blog.content}}</p>
-                                    <hr>
-                                    <footer class="blockquote-footer">By: {{blog.author}} <cite title="Source Title">on {{blog.published_date}}</cite></footer>
-                                </blockquote>
-                            </div>
-                            <div class="card-footer text-muted">
-                                <span>comments:</span>
-                                <span class="badge badge-success">{{ blog.comment_blog.count }}</span>
-                                
-                                <span class="pull-right">{% if thumb  %}
-                                                            <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-down"></i></a>
-                                                        {% else %}
-                                                            <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-up"></i></a>
-                                                        {% endif %}
-                                <span class="badge badge-success">{{likes.count}}</span>
-                                </span><br>
-                            </div>
-                            <div class="row justify-content-md-center">
-                                <div class="col-md-8">
-                                    <div class="card custom-margin">
-                                        <div class="card-header">
-                                            <span class="panel-title"></span>
-                                                <form method="POST" enctype="multipart/form-data">
-                                                    {% csrf_token %} {{ comment_form | as_bootstrap }}
-                                                    <button type="submit" class="btn btn-info">Save</button>
-                                                </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            {% for comment in comments %}
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0">
-                                    <p>{{comment.content_comment}}</p>
-                                    <hr>
-                                    <footer class="blockquote-footer">By: {{comment.author}} <cite title="Source Title">on {{comment.created_date}}</cite>
-                                    <span class="pull-right">
-                                    {% if user.is_authenticated and user == comment.author or user.is_superuser %}
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm login-btn new-post buy dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Select Action<span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a id='post_links' href="{% url 'edit_blog' blog.id %}">Edit Blog comment</a></li>
-                                            <li><a id='post_links' href="{% url 'edit_blog' blog.id %}">Delete Blog comment</a></li>
-                                            
-                                        </ul>
-                                    </div>
-                                    {% endif %}
-                                </span>
-                                    </footer>
-                                </blockquote>
-                            </div><hr>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+    <div class="col-md-6">
+        <div class="card flex-row flex-wrap">
+            <div class="card-header event_image border-0">
+                <img class="card-img-left" src="{{ MEDIA_URL }}{{ blog.blog_image }}" alt="Card image cap">
             </div>
+            <div class="card-block px-2">
+                <h4 class="card-title">{{blog.title}}</h4><hr>
+                <footer class="blockquote-footer">By: {{blog.author}} <cite title="Source Title">on {{blog.published_date}}</cite></footer><hr>
+                <p class="card-text">{{blog.content}}</p>
+                
+            </div>
+            <div class="card-footer w-100 text-muted">
+                <span>comments:</span>
+                <span class="badge badge-success">{{ blog.comment_blog.count }}</span>
+                <span class="pull-right">
+                    {% if thumb  %}
+                        <a href="{% url 'blog' blog.id%}"><i class="fa fa-thumbs-o-down"></i></a>
+                    {% else %}
+                        <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-up"></i></a>
+                    {% endif %}
+                <span class="badge badge-success">{{likes.count}}</span>
+                </span><br>
+            </div>
+        
         </div>
     </div>
+    <br>
 {% endblock %}
