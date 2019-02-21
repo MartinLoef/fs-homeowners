@@ -5,7 +5,6 @@
 {% block page_heading %}Overview{% endblock %}
 {% block content %}
 
-<br>
 <div class="row justify-content-md-center">
     <div class="col-md-4">
           <h4 class="card-title">Latest Blog</h4>
@@ -65,6 +64,32 @@
     </div>
     <br>
     {% endfor %}
-</div>
 
+</div>
+<br>
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+          <h4 class="card-title">Upcoming events</h4><hr>  
+    </div>
+</div>
+{% for up in upcoming_events %}
+    <div class="row justify-content-md-center">
+        <div class="col-md-2 row-striped text-left">
+            <h1 class="display"><span class="badge badge-primary">{{up.scheduled_date_start|date:"d"}}</span> {{up.scheduled_date_start|date:"b"|title}}</h1>
+            <!--<h2>{{up.scheduled_date_start|date:"b"}}</h2>-->
+        </div>
+        <div class="col-md-6 row-striped">
+            <h3 class="text-uppercase"><strong>{{up.title}}</strong></h3>
+            <ul class="list-inline">
+                <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{up.scheduled_date_start|date:"D"}}</li>
+                <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{up.scheduled_date_start|date:"P"}} - {{up.scheduled_date_end|date:"P"}}</li>
+                <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{up.location}}</li>
+                <li class="list-inline-item"><i class="fa fa-money" aria-hidden="true"></i> {{up.price}}</li>
+            </ul>
+            <p>{{up.details|truncatewords:30}}</p>
+        </div>
+    </div>
+    <br>
+{% endfor %}
+<br>
 {% endblock %}

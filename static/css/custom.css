@@ -5,3 +5,13 @@
     min-width: 200px;
     margin: auto auto;
 }
+
+.row-striped:nth-of-type(odd){
+  background-color: #efefef;
+  border: 2px #000000 solid;
+}
+
+.row-striped:nth-of-type(even){
+  background-color: #ffffff;
+  border: 2px #000000 solid;
+}
