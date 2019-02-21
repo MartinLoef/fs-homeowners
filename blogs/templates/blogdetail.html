@@ -18,7 +18,7 @@
                 <span class="badge badge-success">{{ blog.comment_blog.count }}</span>
                 <span class="pull-right">
                     {% if thumb  %}
-                        <a href="{% url 'blog' blog.id%}"><i class="fa fa-thumbs-o-down"></i></a>
+                        <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-down"></i></a>
                     {% else %}
                         <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-up"></i></a>
                     {% endif %}
