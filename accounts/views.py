@@ -30,9 +30,10 @@ def overview(request):
     """return overview.html"""
     blogs = Blog.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
     events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
+    upcoming_events = Event.objects.filter(scheduled_date_start__gte=timezone.now()).order_by('scheduled_date_start')[:4]
     blog_comments = BlogComment.objects.all()
     event_comments = EventComment.objects.all()
-    return render(request, "overview.html", {'blogs': blogs, 'events': events,  'event_comments': event_comments, 'blog_comments': blog_comments })
+    return render(request, "overview.html", {'blogs': blogs, 'events': events,  'event_comments': event_comments, 'blog_comments': blog_comments, 'upcoming_events': upcoming_events })
 
     
 def logout(request):
