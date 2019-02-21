@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row justify-content-md-center">
+    <div class="col-md-10">
+    {% for event in events %}
+    <div class="row justify-content-md-center">
+    <div class="col-md-6">
+        <div class="card flex-row flex-wrap">
+            <div class="card-header event_image border-0">
+                <img class="card-img-left" src="{{ MEDIA_URL }}{{ event.event_image }}" alt="Card image cap">
+            </div>
+            <div class="card-block px-2">
+                <h4 class="card-title">{{event.title}}</h4><hr>
+                <footer class="blockquote-footer">By: {{event.author}} <cite title="Source Title">on {{event.published_date}}</cite></footer><hr>
+                <p class="card-text">{{event.details|truncatewords:12}}</p>
+                
+            </div>
+            <div class="card-footer w-100 text-muted">
+                <span>comments:</span>
+                <span class="badge badge-success">{{ event.event_comment_id.count }}</span>
+                <span class="float-right">views: <span class="badge badge-success">{{event.views}}</span></span><br>
+            </div>
+        
+        </div>
+    </div>
+    </div>
+    <br>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
