@@ -1,0 +1,156 @@
+{% extends 'base.html' %} {% load static from staticfiles %} {% load crispy_forms_tags %} {% block head_stripe_js %}
+
+<script src="https://js.stripe.com/v2/"></script>
+<script>
+    //<![CDATA[
+    Stripe.setPublishableKey('{{ stripe_publishable }}');
+    //]]>
+</script>
+<script src="{% static 'js/stripe.js' %}"></script>
+
+{% endblock %} {% block content %}
+
+{% if total > 0 %}
+
+<div id="checkout">
+    <div class="row justify-content-md-center">
+        <div class="col-md-6">
+            <div class="card border-red">
+                <div class="card-header" id="headingCart">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCart" aria-expanded="true" aria-controls="collapseCart">
+                          <i class="fa fa-cart-plus bss-yellow-text"></i>
+                          <span> Cart contents - Total price: &euro; {{ total }}</span>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseCart" class="collapse show" aria-labelledby="headingCart" data-parent="#checkout">
+                    <div class="card-body">
+                        <div class="row">
+                            {% for item in cart_items %}
+                            <div class="col-12 my-1">
+                                <div class="display card card-default">
+                                    <div class="card-body less-padding">
+                                        <div class="row">
+                                            <div class="d-none d-sm-none d-md-block col-3">
+                                                <div class="product event_image">
+                                                    <center>
+                                                        <img src="{{ MEDIA_URL }}{{ item.event.event_image }}">
+                                                    </center>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                <h3 class="text-uppercase"><strong>{{item.event.title}}</strong></h3>
+                                                <ul class="list-inline">
+                                                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"D"}}</li>
+                                                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"P"}} - {{item.event.scheduled_date_end|date:"P"}}</li>
+                                                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.event.location}}</li>
+                                                    <li class="list-inline-item"><i class="fa fa-money" aria-hidden="true"></i> &euro;{{item.event.price}}</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-12 col-sm-6 ml-sm-auto col-md-4 ml-md-auto">
+                                                <div class="row">
+                                                    <div class="col-12 my-2">
+                                                        <form method="post" action="{% url 'adjust_checkout' item.id %}" class="float-right">
+                                                            {% csrf_token %}
+                                                            <div class="form-group no-margin">
+                                                                <label for="inputAmount" class="sr-only">New Qty</label>
+                                                                <div class="input-group input-group-sm">
+                                                                    <div class="input-group-prepend"><span class="input-group-text">Qty</span></div>
+                                                                    <input name="quantity" type="number" min="0" max="999" class="form-control qty-field" value="{{item.quantity}}">
+                                                                    <div class="input-group-append">
+                                                                        <button type="submit" class="btn btn-info"><i class="fa fa-pencil-square-o"></i> Adjust</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-12 my-2">
+                                                        <form method="post" action="{% url 'adjust_checkout' item.id %}" class="float-right">
+                                                            {% csrf_token %}
+                                                            <button type="submit" name="quantity" value="0" class="btn btn-danger"><i class="fas fa-trash-alt bss-yellow-text"></i> Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="card-header" id="headingPerson">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapsePerson" aria-expanded="false" aria-controls="collapsePerson">
+                          <i class="fa fa-id-card"></i>
+                          <span class="bss-white-text"> Personal Details</span>
+                        </button>
+                    </h5>
+                </div>
+                <form role="form" method="post" id="payment-form" action="{% url 'checkout' %}" class="form-border">
+                    <div id="collapsePerson" class="collapse" aria-labelledby="headingPerson" data-parent="#checkout">
+                        <div class="card-body">
+                            <div id="credit-card-errors" style="display:none">
+                                <div class="alert-message block-message error" id="stripe-error-message"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">{{ order_form.full_name | as_crispy_field }}</div>
+                                <div class="col-12">{{ order_form.address1 | as_crispy_field }}</div>
+                                <div class="col-12">{{ order_form.address2 | as_crispy_field }}</div>
+                                <div class="col-12 col-sm-4">{{ order_form.postcode | as_crispy_field }}</div>
+                                <div class="col-12 col-sm-8">{{ order_form.town_or_city | as_crispy_field }}</div>
+                                <div class="col-12 col-sm-4">{{ order_form.state_or_province | as_crispy_field }}</div>
+                                <div class="col-12 col-sm-8">{{ order_form.country | as_crispy_field }}</div>
+                                <div class="col-12 col-sm-4">{{ order_form.phone_number | as_crispy_field }}</div>
+                                <div class="col-12 col-sm-8">{{ order_form.email_address | as_crispy_field }}</div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="card-header" id="headingCreditCard">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCreditCard" aria-expanded="false" aria-controls="collapseCreditCard">
+                          <i class="fa fa-credit-card"></i>
+                          <span class="bss-white-text"> Payment Details</span>
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseCreditCard" class="collapse" aria-labelledby="headingCreditCard" data-parent="#checkout">
+                        <div class="card-body">
+                            <div id="credit-card-errors" style="display:none">
+                                <div class="alert-message block-message error" id="stripe-error-message"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-8">{{ payment_form.credit_card_number | as_crispy_field }}</div>
+                                        <div class="col-4">{{ payment_form.cvv | as_crispy_field }}</div>
+                                        <div class="col-6">{{ payment_form.expiry_month | as_crispy_field }}</div>
+                                        <div class="col-6">{{ payment_form.expiry_year | as_crispy_field }}</div>
+                                        <div class="col-12">{{ payment_form.stripe_id | as_crispy_field }}</div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+        
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="form-group col-auto m-auto">
+                                    <button type="submit" class="btn btn-default bss-red bss-white-text" id="submit_payment_btn" name="commit">
+                                        <i class="fas fa-donate bss-yellow-text"></i> Submit Payment
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

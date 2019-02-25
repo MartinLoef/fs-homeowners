@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% load static from staticfiles %} {% load crispy_forms_tags %} {% block content %}
+{% if total > 0 %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <a href="{% url 'get_events' %}" class="btn btn-sm bss-red bss-white-text" role="button">
+            <i class="fas fa-shoe-prints bss-yellow-text"></i> Continue Selecting Events</a>
+    </div>
+</div>
+{% endif %}
+{% if total == 0 %}
+<div class="row">
+    <div class="col-6 col-md-6 mx-auto">
+        <div class="display card card-default border-red">
+            <div class="card-body">
+                <h5>
+                    Your cart is empty.
+                </h5>
+                
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-center">
+                <a href="{% url 'get_events' %}" class="btn btn-sm bss-red bss-white-text" role="button">
+                    <i class="fas fa-shoe-prints bss-yellow-text"></i> Go to Events</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row justify-content-md-center">
+    <div class="col-md-6">
+        <div class="display card card-default">
+            <div class="card-header">
+                Cart contents
+            </div>
+            <div class="card-body">
+                {% for item in cart_items %}
+                <div class="card flex-row flex-wrap">
+                    <div class="card-header event_image border-0">
+                        <img class="card-img-left" src="{{ MEDIA_URL }}{{ item.event.event_image }}" alt="Card image cap">
+                    </div>
+                    <div class="card-block px-2">
+                            
+                        <h3 class="text-uppercase"><strong>{{item.event.title}}</strong></h3>
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"D"}}</li>
+                            <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"P"}} - {{item.event.scheduled_date_end|date:"P"}}</li>
+                            <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.event.location}}</li>
+                            <li class="list-inline-item"><i class="fa fa-money" aria-hidden="true"></i> &euro;{{item.event.price}}</li>
+                        </ul>
+                        <hr>
+                        <form method="post" action="{% url 'adjust_cart' item.id %}" class="float-right">
+                            {% csrf_token %}
+                            <div class="form-group no-margin">
+                                <label for="exampleInputAmount" class="sr-only">New Qty</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend"><span class="input-group-text">Qty</span></div>
+                                    <input name="quantity" type="number" min="0" max="999" class="form-control qty-field" value="{{item.quantity}}">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-info">Adjust</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <br>
+                        
+                    </div> 
+                </div>
+                <div class="float-right">
+                    <form method="post" action="{% url 'adjust_cart' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" name="quantity" value="0" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <br>
+                <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-auto mx-auto">
+        <div class="input-group input-group-sm border-red hard-borderradius">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Total: </span>
+            </div>
+            <div class="input-group-prepend">
+                <span class="input-group-text">&euro; {{ total }} </span>
+            </div>
+            <div class="input-group-append">
+                <a href="{% url 'checkout' %}" class="btn btn-success" role="button">
+                <i class="fa fa-money"></i> Proceed to checkout</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

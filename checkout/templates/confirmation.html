@@ -1,0 +1,40 @@
+{% autoescape off %}
+{% load static %}
+
+<body>
+    <div class="row" style="background-color:#c9190a">
+        <div class="col">
+            <img src="{% static 'images/logo.png' %}">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col" style="margin-left:5px;margin-right:5px">
+            <p>Hello,</p>
+            <p>Thank you for your order at <a style="color:#c9190a" href="https://{{ site }}"><b>CommonHold</b></a>.</p>
+            <p>Your order has been given the following orderID: <b>{{ order.id }}</b><br>
+            Please refer to this orderID in case you have any questions.</p>
+            <p>Below is an overview of the item(s) you've chosen to buy:</p>
+        </div>
+    </div>
+    
+    {% for item in order_items %}
+    Day: {{item.event.scheduled_date_start|date:"D"}}<br>
+    Starting time: {{item.event.scheduled_date_start|date:"P"}} till: {{item.event.scheduled_date_end|date:"P"}}<br>
+    Location of the event is: {{item.event.location}}<br>
+    Price per person is: {{item.event.price}}<br>
+    Ordered quantity: {{item.quantity}}<hr>
+    Total charged amount: {{total}}
+    {% endfor %}         
+    <div class="row">
+        <div class="col" style="margin-left:5px;margin-right:5px">
+            <h4>Thank you for joining us us!</h4>
+            <p>with kind regards,</p>
+            <p>Board of Mare <a style="color:#c9190a" href="https://{{ site }}"><b>Commonhold</b></a>.</p>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{% endautoescape %}
