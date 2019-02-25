@@ -11,7 +11,7 @@
                 <h4 class="card-title">{{event.title}}</h4><hr>
                 <footer class="blockquote-footer">By: {{event.author}} <cite title="Source Title">on {{event.published_date}}</cite></footer><hr>
                 <p class="card-text">{{event.details}}</p>
-                
+                <a href="{% url 'add_to_cart' event.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Subscribe</a>
             </div>
             <div class="card-footer w-100 text-muted">
                 <span>comments:</span>

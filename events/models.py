@@ -15,7 +15,8 @@ class Event(models.Model):
     published_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.title
+        return "Event: {0} / author: {1} / scheduled_date_start: {2}".format(
+            self.title, self.author, self.scheduled_date_start)
 
 class EventComment(models.Model):
     eventid = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_comment_id")
