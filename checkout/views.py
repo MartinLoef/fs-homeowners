@@ -6,6 +6,7 @@ from .models import Order, OrderItem
 from django.conf import settings
 from django.utils import timezone
 from events.models import Event
+from .models import User
 from django.core.mail import BadHeaderError
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -28,6 +29,7 @@ def checkout(request):
         if order_form.is_valid() and payment_form.is_valid():
             order = order_form.save(commit=False)
             order.date = timezone.now()
+            order.user = User.objects.get(pk=request.user.id) 
             order.save()
             saved_order = get_object_or_404(Order, pk=order.id)
             
