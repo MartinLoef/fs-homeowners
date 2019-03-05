@@ -5,7 +5,6 @@ from .forms import EventPostForm, EventCommentForm
 from django.contrib.auth.decorators import login_required
 
 @login_required
-
 def create_or_edit_event(request, pk=None):
     """"""
     event = get_object_or_404(Event, pk=pk) if pk else None
@@ -22,12 +21,14 @@ def create_or_edit_event(request, pk=None):
         form = EventPostForm(instance=event)
     return render(request, "eventpostform.html", {'form': form})
 
+@login_required
 def get_events(request):
     """eventposts.html"""
     
     events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     return render(request, "eventposts.html", {'events': events})
 
+@login_required
 def event_detail(request, pk):
     """eventdetail.html"""
     if request.method =="POST":
