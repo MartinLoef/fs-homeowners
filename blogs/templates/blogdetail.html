@@ -1,32 +1,38 @@
 {% extends "base.html" %}
 {% load bootstrap_tags %}
 {% block content %}
-    <div class="row justify-content-md-center">
-    <div class="col-md-6">
-        <div class="card flex-row flex-wrap">
-            <div class="card-header event_image border-0">
-                <img class="card-img-left" src="{{ MEDIA_URL }}{{ blog.blog_image }}" alt="Card image cap">
-            </div>
-            <div class="card-block px-2">
-                <h4 class="card-title">{{blog.title}}</h4><hr>
-                <footer class="blockquote-footer">By: {{blog.author}} <cite title="Source Title">on {{blog.published_date}}</cite></footer><hr>
-                <p class="card-text">{{blog.content}}</p>
-                
-            </div>
-            <div class="card-footer w-100 text-muted">
-                <span>comments:</span>
-                <span class="badge badge-success">{{ blog.comment_blog.count }}</span>
-                <span class="pull-right">
+<div class="container">
+   <h3 class="pb-3 mb-4 font-italic border-bottom">
+      Blog Details
+   </h3>
+   <div class="row justify-content-center">
+      
+      <div class="col-md-8">
+         <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+            <div class="card-body d-flex flex-column less-padding-bottom">
+                <strong class="d-inline-block mb-2 text-primary">{{blog.title}}</strong>
+                <div class="mb-1 text-muted small">Author: {{blog.author}}</div>
+                <div class="mb-1 text-muted small">Published: {{blog.published_date}}</div>
+                <br>
+                <p class="card-text mb-auto">{{blog.content}}</p>
+                <br>
+                <div class="mb-1 text-muted small">
+                    <span class="floatleft">views: <span class="badge badge-success">{{blog.views}}</span></span>
+                    <span class="floatright">
                     {% if thumb  %}
                         <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-down"></i></a>
                     {% else %}
                         <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-up"></i></a>
                     {% endif %}
-                <span class="badge badge-success">{{likes.count}}</span>
-                </span><br>
+                    <span class="badge badge-success">{{likes.count}}</span></span>
+                </div>
             </div>
-        
-        </div>
-    </div>
-    <br>
+            
+            <img class="card-img-right flex-auto d-none d-lg-block" alt="Thumbnail [200x250]" src="{{ MEDIA_URL }}{{ blog.blog_image }}" style="width: 200px; height: 200px;">
+            
+         </div>
+      </div>
+    
+   </div>
+</div>
 {% endblock %}
