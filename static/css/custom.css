@@ -15,3 +15,15 @@
   background-color: #ffffff;
   border: 2px #000000 solid;
 }
+
+.less-padding-bottom{
+    padding-bottom: 4px !important
+}
+
+.floatright{
+    float: right !important    
+}
+
+.floatleft{
+    float: left !important
+}
