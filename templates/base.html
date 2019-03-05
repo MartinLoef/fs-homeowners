@@ -20,48 +20,57 @@
     <title>Commonhold</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-expand-sm  navbar-dark bg-dark">
-  <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-      <span class="navbar-brand mb-0 h1">Commonhold</span>
-      <ul class="navbar-nav mr-auto">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Commonhold</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'overview' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'get_blogs' %}">Blogs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'get_events' %}">Events</a>
+            </li>
+            
+            {% endif %}
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
-          <li class="nav-item active">
-              <a class="nav-link" href="{% url 'overview' %}">Home</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'get_blogs' %}">Blogs</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'get_events' %}">Events</a>
-          </li>
-          {% endif %}
-      </ul>
-  </div>
-  <div class="navbar-collapse collapse w-100 order-2 dual-collapse2">
-    <ul class="navbar-nav ml-auto">
-    {% if user.is_authenticated %}
-        {% if user.is_staff %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'registration' %}">Add User</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts' %}">Users</a>
-        </li>
+            {% if user.is_staff %}
+			 <li class="nav-item">
+                <a class="nav-link" href="{% url 'registration' %}">Add User</a>
+            </li>
+			<li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts' %}">Users</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'view_cart' %}">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'SignIn' %}">SignIn</a>
+            </li>
         {% endif %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'view_cart' %}">Cart</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
-        </li>
-    {% else %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'SignIn' %}">Sign In</a>
-        </li>
-    {%  endif %}
-    </ul>
-  </div>
+        </ul>
+    </div>
 </nav>
+
 <hr>
 {% if messages %}
     <div class="row justify-content-md-center">
@@ -104,6 +113,6 @@
 
 {% endblock %}   
     
-    
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>    
 </body>
 </html>
