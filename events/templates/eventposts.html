@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
    <h3 class="pb-3 mb-4 font-italic border-bottom">
-      Upcoming Events
+      Upcoming Events <a href="{% url 'new_event' %}" class="btn btn-primary btn-sm active floatright" role="button" aria-pressed="true">Add new event</a>
    </h3>
    <div class="row">
       {% for event in events %}

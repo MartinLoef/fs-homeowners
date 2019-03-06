@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
    <h3 class="pb-3 mb-4 font-italic border-bottom">
-      Blog Posts
+      Blog Posts <a href="{% url 'new_blog' %}" class="btn btn-primary btn-sm active floatright" role="button" aria-pressed="true">Add new blog</a>
    </h3>
    <div class="row">
       {% for blog in blogs %}
