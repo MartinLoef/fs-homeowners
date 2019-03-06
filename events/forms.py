@@ -7,4 +7,4 @@ class EventPostForm(forms.ModelForm):
         exclude = ["author", "views"]
 
 class EventCommentForm(forms.Form):
-    event_comment = forms.CharField(125)
+    event_comment = forms.CharField(max_length=125, label=False)

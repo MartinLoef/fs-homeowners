@@ -36,9 +36,9 @@ def event_detail(request, pk):
         if form.is_valid():
             userid = User.objects.get(pk=request.user.id)
             event = get_object_or_404(Event, pk=pk)
-            EventComment.objects.create(comment=event, author=userid, content_reaction=form.cleaned_data['content_reaction']) 
+            EventComment.objects.create(eventid=event, author=userid, event_comment=form.cleaned_data['event_comment']) 
             
-            reactions = EventComment.objects.filter(comment=pk)
+            comments = EventComment.objects.filter(eventid=pk)
             likes = EventLike.objects.filter(EventLikeId=pk)
             if likes:
                 for like in likes:
@@ -49,7 +49,7 @@ def event_detail(request, pk):
                       
             users = User.objects.all()
             comment_form = EventCommentForm()
-            return render(request, "eventdetail.html", {'comment_form': comment_form, 'event': event, 'reactions': reactions, 'users': users, 'likes': likes, 'thumb': thumb})
+            return render(request, "eventdetail.html", {'comment_form': comment_form, 'event': event, 'comments': comments, 'users': users, 'likes': likes, 'thumb': thumb})
     else:
         userid = User.objects.get(pk=request.user.id)
         event = get_object_or_404(Event, pk=pk)
