@@ -14,21 +14,21 @@
 
 <div id="checkout">
     <div class="row justify-content-md-center">
-        <div class="col-md-6">
+        <div class="col-auto mx-auto">
             <div class="card border-red">
                 <div class="card-header" id="headingCart">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseCart" aria-expanded="true" aria-controls="collapseCart">
-                          <i class="fa fa-cart-plus bss-yellow-text"></i>
+                          <i class="fa fa-cart-plus"></i>
                           <span> Cart contents - Total price: &euro; {{ total }}</span>
                         </button>
                     </h5>
                 </div>
                 <div id="collapseCart" class="collapse show" aria-labelledby="headingCart" data-parent="#checkout">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row justify-content-md-center">
                             {% for item in cart_items %}
-                            <div class="col-12 my-1">
+                            <div class="col-auto mx-auto">
                                 <div class="display card card-default">
                                     <div class="card-body less-padding">
                                         <div class="row">
