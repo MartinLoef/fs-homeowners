@@ -21,8 +21,8 @@
                     <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{up.scheduled_date_start|date:"P"}} - {{up.scheduled_date_end|date:"P"}}</li>
                     <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{up.location}}</li>
                     <li class="list-inline-item"><i class="fa fa-money" aria-hidden="true"></i> {{up.price}}</li>
-                    <li class="list-inline-item"><i class="fa fa-hand-o-right"></i> {{up.title}}</li>
-                    <li class="list-inline-item"><a class="btn btn-outline-primary btn-sm" role="button" href="{% url 'event_detail' up.id %}">details</a></li>
+                    <li class="list-inline-item"><i class="fa fa-hand-o-right"></i> {{up.title|truncatechars:16}}</li>
+                    <li class="list-inline-item floatright"><a class="btn btn-outline-primary btn-sm" role="button" href="{% url 'event_detail' up.id %}">details</a></li>
                 </ul>
             </div>         
         </div>
