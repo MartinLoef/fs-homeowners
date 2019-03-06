@@ -26,46 +26,49 @@
     </div>
 </div>
 {% else %}
-        <div class="display card card-default">
-            <div class="card-header">
-                Cart contents
-            </div>
-            <div class="card-body">
+<div class="container">
+    <h3 class="pb-3 mb-4 font-italic border-bottom">
+        Cart Contents
+    </h3>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+                <div class="card-body  flex-column less-padding-bottom">
                 {% for item in cart_items %}
                 <div class="row justify-content-center">
-                       <div class="col-auto mx-auto">
-                            <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
-                                <div class="card-body d-flex flex-column less-padding-bottom">
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item text-primary"><i class="fa fa-hand-o-right"></i> {{item.event.title|truncatechars:16}}</li><hr>
-                                        <li class="list-inline-item"><span class="badge badge-primary">{{item.event.scheduled_date_start|date:"d"}}</span> {{item.event.scheduled_date_start|date:"b"|title}}</li>
-                                        <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"D"}}</li>
-                                        <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"P"}} - {{item.event.scheduled_date_end|date:"P"}}</li>
-                                        <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.event.location}}</li>
-                                        <li class="list-inline-item"><i class="fa fa-money" aria-hidden="true"></i> {{item.event.price}}</li><hr>
-                                        
-                                        <li class="list-inline-item">
-                                        <form method="post" action="{% url 'adjust_cart' item.id %}" class="float-right">
-                                        {% csrf_token %}
-                                        <div class="form-group no-margin">
-                                            <label for="exampleInputAmount" class="sr-only">New Qty</label>
-                                            <div class="input-group input-group-sm">
-                                                <div class="input-group-prepend"><span class="input-group-text">Qty</span></div>
-                                                <input name="quantity" type="number" min="0" max="999" class="form-control qty-field" value="{{item.quantity}}">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-info">Adjust</button>
-                                                </div>
+                    <div class="col-auto mx-auto">
+                        <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+                            <div class="card-body d-flex flex-column less-padding-bottom">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item text-primary"><i class="fa fa-hand-o-right"></i> {{item.event.title|truncatechars:16}}</li><hr>
+                                    <li class="list-inline-item"><span class="badge badge-primary">{{item.event.scheduled_date_start|date:"d"}}</span> {{item.event.scheduled_date_start|date:"b"|title}}</li>
+                                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"D"}}</li>
+                                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{item.event.scheduled_date_start|date:"P"}} - {{item.event.scheduled_date_end|date:"P"}}</li>
+                                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{item.event.location}}</li>
+                                    <li class="list-inline-item"><i class="fa fa-money" aria-hidden="true"></i> {{item.event.price}}</li><hr>
+                                    
+                                    <li class="list-inline-item">
+                                    <form method="post" action="{% url 'adjust_cart' item.id %}" class="float-right">
+                                    {% csrf_token %}
+                                    <div class="form-group no-margin">
+                                        <label for="exampleInputAmount" class="sr-only">New Qty</label>
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-prepend"><span class="input-group-text">Qty</span></div>
+                                            <input name="quantity" type="number" min="0" max="999" class="form-control qty-field" value="{{item.quantity}}">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-info">Adjust</button>
                                             </div>
                                         </div>
-                                        </form>
-                                        </li>
-                                        
-                                    </ul>
-                                </div>         
-                            </div>
+                                    </div>
+                                    </form>
+                                    </li>
+                                    
+                                </ul>
+                            </div>         
                         </div>
                     </div>
-                <div class="float-right">
+                </div>
+                <div class="floatright">
                     <form method="post" action="{% url 'adjust_cart' item.id %}">
                         {% csrf_token %}
                         <button type="submit" name="quantity" value="0" class="btn btn-danger">Delete</button>
@@ -75,6 +78,7 @@
                 <br>
                 {% endfor %}
             </div>
+        </div>
         </div>
     </div>
 </div>
