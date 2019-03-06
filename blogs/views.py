@@ -38,7 +38,6 @@ def blog_like(request, pk):
 
     return render(request, "blogdetail.html", {'comment_form': comment_form, 'blog':blog, 'comments': comments, 'users': users, 'likes': likes, 'thumb': thumb })
 
-    
 def blog_detail(request, pk):
     """blogdetail.html"""
     if request.method =="POST":
@@ -46,9 +45,9 @@ def blog_detail(request, pk):
         if form.is_valid():
             userid = User.objects.get(pk=request.user.id)
             blog = get_object_or_404(Blog, pk=pk)
-            BlogComment.objects.create(blogid=blog, author=userid, blog_comment=form.cleaned_data['Blog_comment']) 
+            BlogComment.objects.create(blogid=blog, authorid=userid, blog_comment=form.cleaned_data['Blog_comment']) 
             
-            comments = BlogComment.objects.filter(blogid=pk)
+            comments = BlogComment.objects.filter(blogid=pk).order_by('-created_date')
             likes = BlogLike.objects.filter(BlogLikeId=pk)
             users = User.objects.all()
             comment_form = BlogCommentForm()
@@ -62,7 +61,7 @@ def blog_detail(request, pk):
             return render(request, "blogdetail.html", {'comment_form': comment_form, 'blog': blog, 'comments': comments, 'users': users, 'likes': likes, 'thumb': thumb})
     else:
         blog = get_object_or_404(Blog, pk=pk)
-        comments = BlogComment.objects.filter(blogid=pk)
+        comments = BlogComment.objects.filter(blogid=pk).order_by('-created_date')
         likes = BlogLike.objects.filter(BlogLikeId=pk)
         userid = User.objects.get(pk=request.user.id)
         if likes:
