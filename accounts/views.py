@@ -24,7 +24,6 @@ def index(request):
 
 
 @login_required
-
 def overview(request):
     """return overview.html"""
     blogs = Blog.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
@@ -38,8 +37,8 @@ def overview(request):
 def logout(request):
     """log user out"""
     auth.logout(request)
-    messages.success(request, "You have succesfully been logged out")
-    return redirect(reverse('SignIn'))
+    messages.error(request, "You have succesfully been logged out")
+    return redirect(reverse('index'))
 
 def SignIn(request):
     """log in"""
@@ -55,18 +54,20 @@ def SignIn(request):
                 auth.login(user=user, request=request)
                 messages.success(request, "You have succesfully logged in")
                 return redirect(reverse('overview'))
-                # return render(request, "overview.html")
+
             else:
                 login_form.add_error(None, "Your username or password is incorrect")
     else:
         login_form = UserLoginForm()
-    # auth.logout(request)
-    # messages.success(request, "You have succesfully been logged out")
+
     return render(request, 'SignIn.html', {'login_form': login_form})
 
+@login_required
 def registration(request):  
-    # if request.user.is_authenticated:
-    #     return redirect(reverse('index'))
+    """
+    form to register en new user to the site, 
+    can only be done by an administrator
+    """
     if request.method == "POST":
         register_form = UserRegistrationForm(request.POST)
         if register_form.is_valid():
