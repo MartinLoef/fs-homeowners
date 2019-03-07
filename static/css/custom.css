@@ -36,3 +36,14 @@
 .font-white{
     color: white !important;
 }
+
+.no-flex{
+    display: block !important;
+    border: 0px !important;
+    
+}
+
+.custom-border{
+    border-radius: 0 !important;
+    
+}
