@@ -1,8 +1,12 @@
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import auth, messages
+from django.core.urlresolvers import reverse
 from django.utils import timezone
 from .models import Event, EventLike, EventComment, User
 from .forms import EventPostForm, EventCommentForm
 from django.contrib.auth.decorators import login_required
+
 
 @login_required
 def create_or_edit_event(request, pk=None):
@@ -30,66 +34,77 @@ def get_events(request):
 
 @login_required
 def event_detail(request, pk):
-    """eventdetail.html"""
-    if request.method =="POST":
-        form = EventCommentForm(request.POST)
-        if form.is_valid():
-            userid = User.objects.get(pk=request.user.id)
-            event = get_object_or_404(Event, pk=pk)
-            EventComment.objects.create(eventid=event, author=userid, event_comment=form.cleaned_data['event_comment']) 
-            
-            comments = EventComment.objects.filter(eventid=pk)
-            likes = EventLike.objects.filter(EventLikeId=pk)
-            if likes:
-                for like in likes:
-                    if like.EventLikedBy == userid:
-                        thumb = True
-            else:
-                thumb = False
-                      
-            users = User.objects.all()
-            comment_form = EventCommentForm()
-            return render(request, "eventdetail.html", {'comment_form': comment_form, 'event': event, 'comments': comments, 'users': users, 'likes': likes, 'thumb': thumb})
-    else:
-        userid = User.objects.get(pk=request.user.id)
-        event = get_object_or_404(Event, pk=pk)
-        reactions = EventComment.objects.filter(eventid=pk)
-        likes = EventLike.objects.filter(EventLikeId=pk)
-        if likes:
-            for like in likes:
-                if like.EventLikedBy == userid:
-                    thumb = True
-        else:
-            thumb = False
-        
-        users = User.objects.all()
-        comment_form = EventCommentForm()
-        event.views += 1
-        event.save()
-        return render(request, "eventdetail.html", {'comment_form': comment_form, 'event': event, 'reactions': reactions, 'users': users, 'likes': likes, 'thumb': thumb})
-
-def event_like(request, pk):
-    """add likes"""
-    event = get_object_or_404(Event, pk=pk)
-    comments = EventComment.objects.filter(eventid=pk)
-    users = User.objects.all()
-    eventid = Event.objects.get(pk=pk)
+    """
+    request the event detail page
+    post possibility for comments on the blog
+    """
     userid = User.objects.get(pk=request.user.id)
-    
+    event = get_object_or_404(Event, pk=pk)
+    users = User.objects.all()
     likes = EventLike.objects.filter(EventLikeId=pk)
-    comment_form = EventCommentForm()
-    
     if likes:
         for like in likes:
             if like.EventLikedBy == userid:
-                EventLike.objects.filter(EventLikeId=eventid, EventLikedBy=userid).delete()
-                thumb = False
-            else:
-                EventLike.objects.create(EventLikeId=eventid, EventLikedBy=userid) 
                 thumb = True
     else:
-        EventLike.objects.create(EventLikeId=eventid, EventLikedBy=userid)
-        thumb = True
-    likes = EventLike.objects.filter(EventLikeId=pk)
+        thumb = False
+    
+    
+   
+    comments = EventComment.objects.filter(eventid=pk)
+    comment_form = EventCommentForm()
+    event.views += 1
+    event.save()
+    return render(request, "eventdetail.html", {'comment_form': 
+                    comment_form, 'event': event, 'comments': comments, 
+                    'users': users, 'likes': likes, 'thumb': thumb})
 
-    return render(request, "eventdetail.html", {'comment_form': comment_form, 'event':event, 'comments': comments, 'users': users, 'likes': likes, 'thumb': thumb })
+@login_required
+def event_comment(request, pk):
+    userid = User.objects.get(pk=request.user.id)
+    event = get_object_or_404(Event, pk=pk)
+    print(request.method)
+    if request.method =="POST":
+        form = EventCommentForm(request.POST)
+        if form.is_valid():
+            EventComment.objects.create(eventid=event, author=userid, 
+                                        event_comment=form.cleaned_data['event_comment']) 
+            
+            comments = EventComment.objects.filter(eventid=pk)
+            comment_form = EventCommentForm()
+            return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+        else:
+            messages.success(request, "You are supposed to be logged in to comment on that!")
+            return redirect(reverse('index'))
+    else:
+        return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+
+def event_like(request, pk):
+    """
+    users can like or remove an earlier 
+    given like on event
+    """
+    if request.user.is_authenticated:
+        users = User.objects.all()
+        eventid = Event.objects.get(pk=pk)
+        userid = User.objects.get(pk=request.user.id)
+    
+        likes = EventLike.objects.filter(EventLikeId=pk)
+        comment_form = EventCommentForm()
+    
+        if likes:
+            for like in likes:
+                if like.EventLikedBy == userid:
+                    EventLike.objects.filter(EventLikeId=eventid, EventLikedBy=userid).delete()
+                    thumb = False
+                else:
+                    EventLike.objects.create(EventLikeId=eventid, EventLikedBy=userid) 
+                    thumb = True
+        else:
+            EventLike.objects.create(EventLikeId=eventid, EventLikedBy=userid)
+            thumb = True
+        likes = EventLike.objects.filter(EventLikeId=pk)
+        return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+    else:
+        messages.success(request, "You are supposed to be logged in to like that!")
+        return redirect(reverse('index'))
