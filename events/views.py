@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import auth, messages
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from .models import Event, EventLike, EventComment, User
+from .models import Event, EventLike, EventComment, User, EventJoin
 from .forms import EventPostForm, EventCommentForm
 from django.contrib.auth.decorators import login_required
 
@@ -42,6 +42,15 @@ def event_detail(request, pk):
     event = get_object_or_404(Event, pk=pk)
     users = User.objects.all()
     likes = EventLike.objects.filter(EventLikeId=pk)
+    joins = EventJoin.objects.filter(EventJoinId=pk)
+    jointhumb = False
+    if joins:
+        for join in joins:
+            if join.EventJoinBy == userid:
+                jointhumb = True
+    else:
+        jointhumb = False
+    
     if likes:
         for like in likes:
             if like.EventLikedBy == userid:
@@ -55,7 +64,7 @@ def event_detail(request, pk):
     event.save()
     return render(request, "eventdetail.html", {'comment_form': 
                     comment_form, 'event': event, 'comments': comments, 
-                    'users': users, 'likes': likes, 'thumb': thumb})
+                    'users': users, 'likes': likes, 'thumb': thumb, 'jointhumb': jointhumb, 'joins': joins})
 
 @login_required
 def event_comment(request, pk):
@@ -87,8 +96,6 @@ def event_like(request, pk):
         userid = User.objects.get(pk=request.user.id)
     
         likes = EventLike.objects.filter(EventLikeId=pk)
-        comment_form = EventCommentForm()
-    
         if likes:
             for like in likes:
                 if like.EventLikedBy == userid:
@@ -104,4 +111,33 @@ def event_like(request, pk):
         return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
     else:
         messages.success(request, "You are supposed to be logged in to like that!")
+        return redirect(reverse('index'))
+
+def event_join(request, pk):
+    """
+    users can join or remove an earlier 
+    given join on event
+    """
+    if request.user.is_authenticated:
+        users = User.objects.all()
+        eventid = Event.objects.get(pk=pk)
+        userid = User.objects.get(pk=request.user.id)
+    
+        joins = EventJoin.objects.filter(EventJoinId=pk)
+        
+        if joins:
+            for join in joins:
+                if join.EventJoinBy == userid:
+                    EventJoin.objects.filter(EventJoinId=eventid, EventJoinBy=userid).delete()
+                    Joined = False
+                else:
+                    EventJoin.objects.create(EventJoinId=eventid, EventJoinBy=userid) 
+                    Joined = True
+        else:
+            EventJoin.objects.create(EventJoinId=eventid, EventJoinBy=userid)
+            Joined = True
+        joins = EventJoin.objects.filter(EventJoinId=pk)
+        return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+    else:
+        messages.success(request, "You are supposed to be logged in to Join that!")
         return redirect(reverse('index'))

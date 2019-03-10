@@ -6,26 +6,7 @@
     </div>
 </div>
 {% endif %}
-{% if total == 0 %}
-<div class="row">
-    <div class="col-auto mx-auto">
-        <div class="display card card-default border-red">
-            <div class="card-body">
-                <h5>
-                    Your cart is empty.
-                </h5>
-                
-            </div>
-            <div class="card-footer">
-                <div class="d-flex justify-content-center">
-                <a href="{% url 'get_events' %}" class="btn btn-sm" role="button">
-                    <i class="fas fa-shoe-prints"></i> Go to Events</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% else %}
+
 <div class="container">
     <h3 class="pb-3 mb-4 font-italic border-bottom">
         Cart Contents
@@ -108,5 +89,5 @@
         </div>
     </div>
 </div>
-{% endif %}
+
 {% endblock %}

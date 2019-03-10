@@ -35,3 +35,11 @@ class EventLike(models.Model):
     def __int__(self):
         return "EventLikeId: {0} / EventID: {1} / User: {2}".format(
             self.id, self.EventLikeId, self.EventLikedBy)
+
+class EventJoin(models.Model):
+    EventJoinId = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_join_id")
+    EventJoinBy = models.ForeignKey(User, on_delete=models.CASCADE, related_name="event_join_by_user")
+    
+    def __int__(self):
+        return "JoinId: {0} / EventJoinId: {1} / User: {2}".format(
+            self.id, self.EventJoinId, self.EventJoinBy)
