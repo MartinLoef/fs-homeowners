@@ -44,6 +44,7 @@ def event_detail(request, pk):
     likes = EventLike.objects.filter(EventLikeId=pk)
     joins = EventJoin.objects.filter(EventJoinId=pk)
     jointhumb = False
+    thumb = False
     if joins:
         for join in joins:
             if join.EventJoinBy == userid:
@@ -141,3 +142,8 @@ def event_join(request, pk):
     else:
         messages.success(request, "You are supposed to be logged in to Join that!")
         return redirect(reverse('index'))
+
+def delete_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    event.delete()
+    return redirect(reverse('get_events'))
