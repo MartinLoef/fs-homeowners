@@ -1,12 +1,16 @@
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required
+
+
+""" custom imports """
 from .models import Blog, BlogComment, BlogLike, User
 from accounts.models import UserProfile
 from .forms import BlogPostForm, BlogCommentForm
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+
 
 def get_blogs(request):
     """ 
@@ -51,9 +55,11 @@ def blog_like(request, pk):
         messages.success(request, "You are supposed to be logged in to like that!")
         return redirect(reverse('index'))
         
-        
 def blog_detail(request, pk):
-    """blogdetail.html"""
+    """
+    request the blog detail page
+    post possibilitie for comments on the blog
+    """
     if request.user.is_authenticated:
         if request.method =="POST":
             form = BlogCommentForm(request.POST)
@@ -101,7 +107,10 @@ def blog_detail(request, pk):
         return redirect(reverse('index'))
     
 def create_or_edit_blog(request, pk=None):
-    """"""
+    """
+    Form view to support the possibility to add
+    or edit blogs
+    """
     blog = get_object_or_404(Blog, pk=pk) if pk else None
     if request.method =="POST":
         print("form is a post")

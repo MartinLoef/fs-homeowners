@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import auth, messages
 from django.contrib.auth import login, authenticate
@@ -8,6 +8,7 @@ from accounts.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils import timezone
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
@@ -15,7 +16,7 @@ from accounts.models import UserProfile
 from accounts.forms import UserProfileForm
 from blogs.models import Blog, BlogComment
 from events.models import Event, EventComment
-from django.utils import timezone
+
 
 # Create your views here.
 def index(request):
