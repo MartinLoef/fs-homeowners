@@ -48,9 +48,7 @@ def event_detail(request, pk):
                 thumb = True
     else:
         thumb = False
-    
-    
-   
+
     comments = EventComment.objects.filter(eventid=pk)
     comment_form = EventCommentForm()
     event.views += 1
@@ -63,7 +61,6 @@ def event_detail(request, pk):
 def event_comment(request, pk):
     userid = User.objects.get(pk=request.user.id)
     event = get_object_or_404(Event, pk=pk)
-    print(request.method)
     if request.method =="POST":
         form = EventCommentForm(request.POST)
         if form.is_valid():

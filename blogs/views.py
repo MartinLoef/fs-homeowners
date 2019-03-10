@@ -61,50 +61,46 @@ def blog_detail(request, pk):
     post possibilitie for comments on the blog
     """
     if request.user.is_authenticated:
-        if request.method =="POST":
-            form = BlogCommentForm(request.POST)
-            if form.is_valid():
-                userid = User.objects.get(pk=request.user.id)
-                blog = get_object_or_404(Blog, pk=pk)
-                BlogComment.objects.create(blogid=blog, authorid=userid, 
-                                            blog_comment=form.cleaned_data['Blog_comment']) 
-                
-                comments = BlogComment.objects.filter(blogid=pk).order_by('-created_date')
-                likes = BlogLike.objects.filter(BlogLikeId=pk)
-                users = User.objects.all()
-                comment_form = BlogCommentForm()
-                if likes:
-                    for like in likes:
-                        if like.PostLikedBy == userid:
-                            thumb = True
+        userid = User.objects.get(pk=request.user.id)
+        blog = get_object_or_404(Blog, pk=pk)
+        comments = BlogComment.objects.filter(blogid=pk).order_by('-created_date')
+        likes = BlogLike.objects.filter(BlogLikeId=pk)
+        if likes:
+            for like in likes:
+                if like.BlogLikedBy == userid:
+                    thumb = True
                 else:
                     thumb = False
-                
-                return render(request, "blogdetail.html", {'comment_form': comment_form, 
-                                'blog': blog, 'comments': comments, 'users': users, 
-                                'likes': likes, 'thumb': thumb})
         else:
-            blog = get_object_or_404(Blog, pk=pk)
-            comments = BlogComment.objects.filter(blogid=pk).order_by('-created_date')
-            likes = BlogLike.objects.filter(BlogLikeId=pk)
-            userid = User.objects.get(pk=request.user.id)
-            if likes:
-                    for like in likes:
-                        if like.BlogLikedBy == userid:
-                            thumb = True
-            else:
-                thumb = False
-                    
-            users = User.objects.all()
-            comment_form = BlogCommentForm()
-            blog.views += 1
-            blog.save()
-            return render(request, "blogdetail.html", {'comment_form': comment_form, 
-                            'blog':blog, 'comments': comments, 'users': users, 
-                            'likes': likes, 'thumb': thumb})
+            thumb = False
+            
+        users = User.objects.all()
+        comment_form = BlogCommentForm()
+        blog.views += 1
+        blog.save()        
+        return render(request, "blogdetail.html", {'comment_form': comment_form, 
+                    'blog': blog, 'comments': comments, 'users': users, 
+                    'likes': likes, 'thumb': thumb})
+        
     else:
         messages.success(request, "You are supposed to be logged in to see that!")
         return redirect(reverse('index'))
+
+def blogpost_comment(request, pk):
+    userid = User.objects.get(pk=request.user.id)
+    blogid = Blog.objects.get(pk=pk)
+    if request.method =="POST":
+        form = BlogCommentForm(request.POST)
+        if form.is_valid():
+            userid = User.objects.get(pk=request.user.id)
+            blog = get_object_or_404(Blog, pk=pk)
+            BlogComment.objects.create(blogid=blog, authorid=userid, 
+                                        blog_comment=form.cleaned_data['Blog_comment'])
+            return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
+        else:
+            return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
+    else:
+        return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
     
 def create_or_edit_blog(request, pk=None):
     """

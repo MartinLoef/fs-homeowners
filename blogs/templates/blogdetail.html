@@ -33,7 +33,7 @@
                 <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
                 <div class="card-body">
                     <strong class="d-inline-block mb-2 text-primary">Post a Comment</strong>
-                    <form method="POST" enctype="multipart/form-data">
+                    <form method="POST" action="{% url 'blogpost_comment' blog.id%}" enctype="multipart/form-data">
                         {% csrf_token %} {{ comment_form | as_bootstrap }}
                         <button type="submit" class="btn btn-info">Post</button>
                     </form>
