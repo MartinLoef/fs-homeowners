@@ -19,9 +19,9 @@
                         <span class="floatleft">views: <span class="badge badge-success">{{blog.views}}</span></span>
                         <span class="floatright">
                         {% if thumb  %}
-                            <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-down"></i></a>
+                            <a class="text-muted" href="{% url 'blog_like' blog.id%}"> Dislike <i class="fa fa-thumbs-o-up"></i></a>
                         {% else %}
-                            <a href="{% url 'blog_like' blog.id%}"><i class="fa fa-thumbs-o-up"></i></a>
+                            <a class="text-muted" href="{% url 'blog_like' blog.id%}"> Like <i class="fa fa-thumbs-o-up"></i></a>
                         {% endif %}
                         <span class="badge badge-success">{{likes.count}}</span></span>
                     </div>

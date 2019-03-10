@@ -23,7 +23,6 @@ def index(request):
     """return index.html"""
     return render(request, "index.html")
 
-
 @login_required
 def overview(request):
     """return overview.html"""
@@ -34,7 +33,6 @@ def overview(request):
     event_comments = EventComment.objects.all()
     return render(request, "overview.html", {'blogs': blogs, 'events': events,  'event_comments': event_comments, 'blog_comments': blog_comments, 'upcoming_events': upcoming_events })
 
-    
 def logout(request):
     """log user out"""
     auth.logout(request)
@@ -92,10 +90,6 @@ def registration(request):
     return render(request, 'registration.html', 
             {'register_form': register_form})
 
-def profile(request):
-    user = User.objects.get(email=request.user.email)
-    return render(request, 'profile.html', {'profile': user})
-
 def accounts(request):
     if request.user.is_authenticated:
         users = User.objects.all()
@@ -104,28 +98,18 @@ def accounts(request):
     else:
         return redirect(reverse('index'))
 
-def user_profile(request):
-    if request.user.is_authenticated:
-        userid = request.user.id
-        userEmail = request.user.email
-        try:
-            profile = get_object_or_404(UserProfile, user=request.user.id)
-            # print (profile.id)
-            if profile:
-                # profile = get_object_or_404(UserProfile, user=request.user.id)
-                print(userid, userEmail, profile.id, profile.name, profile.phonenumber, profile.profile_image)
-                profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
-                return render(request, 'profile.html' , {'profile': profile})
+def user_suspend(request, pk):
+    userid = User.objects.get(pk=pk)
+    if userid:
+        userid.is_active = False
+        userid.save()
+        messages.success(request, "You suspended the account!")
+        return HttpResponseRedirect(reverse('accounts'))
 
-        except:
-            print("user has no profile")
-            # return render(request, 'profile.html')
-            profile_form = UserProfileForm()
-            return render(request, 'profile.html')
-    else:
-        # return render(request, 'profile.html', {'UserProfileForm': UserProfileForm})
-        print("something went wrong")
-        return render(request, 'profile.html')
-        
-def edit_profile(request, id):
-    profile = get_object_or_404(UserProfile, pk=id)
+def user_activate(request, pk):
+    userid = User.objects.get(pk=pk)
+    if userid:
+        userid.is_active = True
+        userid.save()
+        messages.success(request, "You Activated the account!")
+        return HttpResponseRedirect(reverse('accounts'))
