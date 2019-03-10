@@ -8,7 +8,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Users who said they will join</h4>
+        <h4 class="modal-title">Joined Users</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
@@ -59,13 +59,13 @@
                 <div class="d-flex justify-content-between mb-1 text-muted small">
                     <span class="floatleft">views: <span class="badge badge-success">{{event.views}}</span></span>
                     {% if event.price < 0.1 %}
-                    <a data-target="#myModalJoiners" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#myModalJoiners">Joiners: <span class="badge badge-success">{{joins.count}}</span></a>
+                    <a class="text-muted" data-target="#myModalJoiners" data-toggle="modal" href="#myModalJoiners"><i class="fa fa-eye"></i>Joiners: <span class="badge badge-success">{{joins.count}}</span></a>
                     {% endif %}    
                     <span class="floatright">
                     {% if thumb  %}
-                        <a href="{% url 'event_like' event.id%}"><i class="fa fa-thumbs-o-down"></i></a>
+                        <a class="text-muted" href="{% url 'event_like' event.id%}"> Dislike <i class="fa fa-thumbs-o-up"></i></a>
                     {% else %}
-                        <a href="{% url 'event_like' event.id%}"><i class="fa fa-thumbs-o-up"></i></a>
+                        <a class="text-muted" href="{% url 'event_like' event.id%}"> Like <i class="fa fa-thumbs-o-up"></i></a>
                     {% endif %}
                     <span class="badge badge-success">{{likes.count}}</span></span>
                 </div>
