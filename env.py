@@ -6,3 +6,5 @@ os.environ.setdefault('DATABASE_URL', "postgres://gnbuvzcvjvxzqp:f28151d2cbd4f02
 os.environ.setdefault('SECRET_KEY', "'17ecx98^hn+7b(ma&kddm_&jwjc)&3px(1e!o4=5zuql$=x@7k'")
 os.environ.setdefault('STRIPE_PUBLISHABLE', "'pk_test_Fzmde77QxCUaso4fUXas3Aia'")
 os.environ.setdefault('STRIPE_SECRET', "'sk_test_DAHIDBBpORcEO0oJdFIiMA4j'")
+os.environ.setdefault('AWS_ACCESS_KEY_ID', "AKIAJJQMZ2B6FN2DVYSA")
+os.environ.setdefault('AWS_SECRET_ACCESS_KEY', "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")
