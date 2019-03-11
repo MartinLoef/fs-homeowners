@@ -1,1 +1,1 @@
-[![Build Status](https://travis-ci.org/MartinLoef/commonhold.svg?branch=master)](https://travis-ci.org/MartinLoef/commonhold)
+[![Build Status](https://travis-ci.com/MartinLoef/fs-homeowners.svg?branch=master)](https://travis-ci.com/MartinLoef/fs-homeowners)
