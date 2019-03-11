@@ -147,3 +147,10 @@ def delete_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
     event.delete()
     return redirect(reverse('get_events'))
+
+def delete_comment(request, pk):
+    eventcomment = EventComment.objects.get(pk=pk)
+    event = eventcomment.eventid
+    eventid = event.id
+    eventcomment.delete()
+    return HttpResponseRedirect(reverse('event_detail', args=(eventid,)))

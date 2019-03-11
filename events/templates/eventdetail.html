@@ -98,7 +98,15 @@
          {% for comment in comments %}
             <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
                 <div class="card-body d-flex flex-column less-padding-bottom">
-                    <div class="mb-1 text-muted small">Author: {{comment.author}}</div>
+                    <div class="mb-1 text-muted small">Author: {{comment.author}}
+                    {% if user.is_authenticated and user == blog.author or user.is_superuser %}
+                    <div class="btn-group floatright">
+                        <button type="button" class="btn btn-sm login-btn new-post buy dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Select Action<span class="caret"></span></button>
+                        <ul class="dropdown-menu floatright">
+                            <li><a id='blogcomment_links' href="{% url 'delete_comment' comment.id %}">Delete Comment</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}</div>
                     <div class="mb-1 text-muted small">Published: {{comment.created_date}}</div>
                     <br>
                     <p class="card-text mb-auto">{{comment.event_comment}}</p>
