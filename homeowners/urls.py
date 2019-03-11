@@ -18,6 +18,7 @@ from django.contrib import admin
 from accounts import urls as urls_accounts
 from cart import urls as urls_cart
 from checkout import urls as urls_checkout
+from contact import urls as urls_contact
 from blogs import urls as urls_blogs
 from events import urls as urls_events
 from accounts.views import index, SignIn
@@ -34,6 +35,7 @@ urlpatterns = [
     url(r'^events/', include(urls_events)),
     url(r'^$', index, name="index"),
     url(r'^cart/', include(urls_cart)),
+    url(r'^contact/', include(urls_contact)),
     url(r'^checkout/', include(urls_checkout)),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]

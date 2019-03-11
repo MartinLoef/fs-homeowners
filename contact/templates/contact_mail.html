@@ -1,0 +1,45 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contact Submission Mail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    
+</head>
+
+<body>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <p>
+                A new submission of the contact form has been made.<br>
+                Below you'll find the form submitted:
+            </p>
+            <table class="table">
+                <tr style="border-color: #c9190a">
+                    <td><b>Name:</b>&emsp;{{ contact_name }}</td>
+                </tr>
+                <tr style="border-color: #c9190a">
+                    <td><b>Mail Address:</b>&emsp;{{ contact_email }}</td>
+                </tr>
+                <tr>
+                    <td><b>Form content:</b></td>
+                </tr>
+                <tr style="border-color: #c9190a">
+                    <td>
+                        <b>Subject:</b> {{ form_subject }}<br>
+                        &nbsp;<br>
+                        <b>Content:</b><br>{{ form_content }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>    
+
+</body>
+</html>
+
+{% endautoescape %}
