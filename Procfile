@@ -1,0 +1,1 @@
+web: gunicorn fs-homeowners.wsgi:application
