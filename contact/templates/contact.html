@@ -1,0 +1,38 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %} 
+{% load crispy_forms_tags %}
+<div class="container">
+    <h3 class="pb-3 mb-4 font-italic border-bottom">
+        Contact Page
+    </h3>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+                <div class="card-body bg-secondary flex-column less-padding-bottom">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 mx-auto">
+                            <div class="card no-flex flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+                                <div class="card-header custom-border font-white bg-dark">Contact us</div>
+                                    <div class="card-body d-flex flex-column less-padding-bottom">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                                {{ form.contact_name | as_crispy_field }} 
+                                                {{ form.contact_email | as_crispy_field }} 
+                                                {{ form.subject | as_crispy_field }} 
+                                                {{ form.content | as_crispy_field }}
+                                            <button class="btn btn-primary btn-sm active floatright" type="submit">Contact</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+{% endblock %}
