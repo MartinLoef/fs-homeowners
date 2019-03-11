@@ -1,1 +1,1 @@
-web: gunicorn commonhold.wsgi:application
+web: gunicorn fs-homeowners.wsgi:application
