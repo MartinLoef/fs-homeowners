@@ -124,4 +124,11 @@ def delete_blog(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     blog.delete()
     return redirect(reverse('get_blogs'))
+
+def delete_comment(request, pk):
+    blogcomment = BlogComment.objects.get(pk=pk)
+    blog = blogcomment.blogid
+    blogid = blog.id
+    blogcomment.delete()
+    return HttpResponseRedirect(reverse('blog_detail', args=(blogid,)))
     
