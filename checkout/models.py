@@ -31,8 +31,9 @@ class OrderItem(models.Model):
     
     def __str__(self):
         self.total_item_price = self.get_total_item_price
-        return "Qty: {0} / Item: {1} @ € {2} / Total: € {3}".format(
+        return "Qty: {0} / Item: {1} @ € {2} / Total: € {3} / OrderID: {4}".format(
             self.quantity, 
             self.event.title, self.event.price, 
-            self.total_item_price
+            self.total_item_price,
+            self.order.id
             )

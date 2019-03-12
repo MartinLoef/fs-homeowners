@@ -28,13 +28,16 @@
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'overview' %}">Home</a>
+                <a class="nav-link" href="{% url 'overview' %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'get_blogs' %}">Blogs</a>
+                <a class="nav-link" href="{% url 'get_blogs' %}"><i class="fa fa-book" aria-hidden="true"></i> Blogs</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'get_events' %}">Events</a>
+                <a class="nav-link" href="{% url 'get_events' %}"><i class="fa fa-calendar" aria-hidden="true"></i> Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'orderhistory' %}"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Orders</a>
             </li>
             
             {% endif %}
@@ -50,10 +53,10 @@
         {% if user.is_authenticated %}
             {% if user.is_staff %}
 			 <li class="nav-item">
-                <a class="nav-link" href="{% url 'registration' %}">Add User</a>
+                <a class="nav-link" href="{% url 'registration' %}"><i class="fa fa-user-plus" aria-hidden="true"></i> Add User</a>
             </li>
 			<li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts' %}">Users</a>
+                <a class="nav-link" href="{% url 'accounts' %}"><i class="fa fa-users" aria-hidden="true"></i> Users</a>
             </li>
             {% endif %}
             <li class="nav-item">
@@ -65,7 +68,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
             </li>
         {% else %}
             <li class="nav-item">

@@ -7,6 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 from events.models import Event
 from .models import User
+from django.contrib.auth.models import User
 from django.core.mail import BadHeaderError
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -98,3 +99,15 @@ def checkout(request):
         'payment_form':payment_form, 
         'stripe_publishable':settings.STRIPE_PUBLISHABLE}
         )
+
+def orderhistory(request):
+    Userid = User.objects.get(pk=request.user.id)
+    uid = Userid.id
+    Orders = OrderItem.objects.all()
+    count = 0
+    for Order in Orders:
+        if Order.order.user == Userid:
+            print("match")
+            count += 1
+
+    return render(request, "orderhistory.html", {'Orders': Orders, "count": count })
