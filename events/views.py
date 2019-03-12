@@ -12,6 +12,11 @@ from django.contrib.auth.decorators import login_required
 def create_or_edit_event(request, pk=None):
     """"""
     event = get_object_or_404(Event, pk=pk) if pk else None
+    if event == None:
+        formtype = "Add an Event"
+    else:
+        formtype = "Edit an Event"
+    
     if request.method =="POST":
         print("form is a post")
         
@@ -23,7 +28,7 @@ def create_or_edit_event(request, pk=None):
     else:
         print("form is a get")
         form = EventPostForm(instance=event)
-    return render(request, "eventpostform.html", {'form': form})
+    return render(request, "eventpostform.html", {'form': form, 'formtype': formtype})
 
 @login_required
 def get_events(request):

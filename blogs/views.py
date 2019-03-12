@@ -107,7 +107,13 @@ def create_or_edit_blog(request, pk=None):
     Form view to support the possibility to add
     or edit blogs
     """
+    
     blog = get_object_or_404(Blog, pk=pk) if pk else None
+    if blog == None:
+        formtype = "Add a Blog"
+    else:
+        formtype = "Edit a Blog"
+        
     if request.method =="POST":
         print("form is a post")
         form = BlogPostForm(request.POST, request.FILES, instance=blog)
@@ -118,7 +124,8 @@ def create_or_edit_blog(request, pk=None):
     else:
         print("form is a get")
         form = BlogPostForm(instance=blog)
-    return render(request, "blogpostform.html", {'form': form})
+        
+    return render(request, "blogpostform.html", {'form': form, 'formtype': formtype})
 
 def delete_blog(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
