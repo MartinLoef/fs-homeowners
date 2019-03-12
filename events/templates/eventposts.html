@@ -8,7 +8,11 @@
       {% for event in events %}
       <div class="col-md-6">
          <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+<<<<<<< HEAD
             <div class="card-body card-text card d-flex flex-column less-padding-bottom">
+=======
+            <div class="card-body d-flex flex-column less-padding-bottom">
+>>>>>>> dd48a7448314036589af5a42c68e54f0c1ae41ea
                 <strong class="d-inline-block mb-2 text-primary">{{event.title}}</strong>
                 <div class="mb-1 text-muted small">{{event.scheduled_date_start}} By: {{event.author}} </div>
                 <p class="card-text mb-auto">{{event.details|truncatewords:12}}</p>

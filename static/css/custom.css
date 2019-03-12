@@ -46,6 +46,7 @@
 .custom-border{
     border-radius: 0 !important;
     
+<<<<<<< HEAD
 }
 
 .card-text {
@@ -54,4 +55,6 @@
 
 .card {
     max-width: 100%;
+=======
+>>>>>>> dd48a7448314036589af5a42c68e54f0c1ae41ea
 }
