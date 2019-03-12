@@ -125,7 +125,7 @@ def delete_blog(request, pk):
     blog.delete()
     return redirect(reverse('get_blogs'))
 
-def delete_comment(request, pk):
+def delete_blog_comment(request, pk):
     blogcomment = BlogComment.objects.get(pk=pk)
     blog = blogcomment.blogid
     blogid = blog.id
