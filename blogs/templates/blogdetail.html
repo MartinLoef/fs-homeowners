@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
-                <div class="card-body d-flex flex-column less-padding-bottom">
+                <div class="card-body card-text card d-flex flex-column less-padding-bottom">
                     <strong class="d-flex justify-content-between mb-2 text-primary">{{blog.title}}
                     {% if user.is_authenticated and user == blog.author or user.is_superuser %}
                     <div class="btn-group">
@@ -52,7 +52,7 @@
             </div>
             {% for comment in comments %}
             <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
-                <div class="card-body d-flex flex-column less-padding-bottom">
+                <div class="card-body card-text card d-flex flex-column less-padding-bottom">
                     <div class="mb-1 text-muted small">Author: {{comment.authorid}} 
                     {% if user.is_authenticated and user == blog.author or user.is_superuser %}
                     <div class="btn-group floatright">
