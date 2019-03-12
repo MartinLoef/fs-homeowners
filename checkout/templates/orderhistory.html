@@ -8,14 +8,14 @@
     </h3>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+            <div class="card no-flex flex-md-row mb-4 shadow-sm h-md-250 bg-light">
                 <div class="card-body bg-secondary flex-column less-padding-bottom">
                     {% if count > 0 %}
                     {% for OrderItem in Orders %}
                     
                         {% if OrderItem.order.user == user %}
                         <div class="row justify-content-center">
-                            <div class="col-auto mx-auto">
+                            <div class="col-sm-10 mx-auto">
                                 <div class="card no-flex flex-md-row mb-4 shadow-sm h-md-250 bg-light">
                                     <div class="card-header custom-border font-white bg-dark">
                                         <i class="fa fa-hand-o-right"></i> OrderID: {{OrderItem.order.id}}
@@ -23,7 +23,7 @@
                                     <div class="card-body d-flex flex-column">
                                         <ul class="list-group">
                                             
-                                            <li class="list-group-item"><i class="fa fa-bell" aria-hidden="true"></i> Event:{{OrderItem.event.title}}</li>
+                                            <li class="list-group-item"><i class="fa fa-bell" aria-hidden="true"></i> Event: {{OrderItem.event.title|truncatechars:20}}</li>
                                             <li class="list-group-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> Placed on: {{OrderItem.order.date}} </li>
                                             <li class="list-group-item"><i class="fa fa-tags" aria-hidden="true"></i> Ordered Quantity: {{OrderItem.quantity}}</li>
                                             <li class="list-group-item"><i class="fa fa-money" aria-hidden="true"></i> Total Charged: {{OrderItem.total_item_price}}</li>
