@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block page_title %}Home Page{% endblock %}
 
 {% block page_heading %}Home{% endblock %}
@@ -7,7 +7,7 @@
 <div class="row justify-content-md-center">
     <div class="col-12 col-md-6">
         <div class="card">
-          <img class="card-img-top" src="/media/images/2642KB.jpg" alt="Mare building">
+          <img class="card-img-top" src="{% static 'images/2642KB.jpg' %}" alt="Mare building">
           <div class="card-body">
             <h5 class="card-title">Welcome to the Commonhold site for the Mare in Pijnacker</h5>
             <p class="card-text">This site is for all home owners of the Mare Appartment building and 
