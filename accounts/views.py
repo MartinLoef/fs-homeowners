@@ -45,17 +45,22 @@ def SignIn(request):
         return redirect(reverse('overview'))
     if request.method == "POST":
         login_form = UserLoginForm(request.POST)
-        
-        if login_form.is_valid():
-            user = auth.authenticate(username=request.POST['username'],
-                                    password=request.POST['password'])
-            if user:
-                auth.login(user=user, request=request)
-                messages.success(request, "You have succesfully logged in")
-                return redirect(reverse('overview'))
-
-            else:
-                login_form.add_error(None, "Your username or password is incorrect")
+        username=request.POST['username']
+        user = User.objects.get(username=username)
+        if user.is_active:
+            
+            if login_form.is_valid():
+                user = auth.authenticate(username=request.POST['username'],
+                                        password=request.POST['password'])
+                if user:
+                    auth.login(user=user, request=request)
+                    messages.success(request, "You have succesfully logged in")
+                    return redirect(reverse('overview'))
+    
+                else:
+                    login_form.add_error(None, "Your username or password is incorrect")
+        else:
+            login_form.add_error(None, "Your username is suspended")
     else:
         login_form = UserLoginForm()
 
