@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import get_blogs, blog_detail, create_or_edit_blog, blog_like, blogpost_comment, delete_blog, delete_comment
+from .views import get_blogs, blog_detail, create_or_edit_blog, blog_like, blogpost_comment, delete_blog, delete_blog_comment
 
 urlpatterns = [
     url(r'^blogs/$', get_blogs, name="get_blogs"),
@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^new/$', create_or_edit_blog, name='new_blog'),
     url(r'^(?P<pk>\d+)/edit/$', create_or_edit_blog, name='edit_blog'),
     url(r'^(?P<pk>\d+)/delete/$', delete_blog, name='delete_blog'),
-    url(r'^(?P<pk>\d+)/comment/delete/$', delete_comment, name='delete_comment'),
+    url(r'^(?P<pk>\d+)/comment/delete/$', delete_blog_comment, name='delete_blog_comment'),
     ]
