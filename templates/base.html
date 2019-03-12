@@ -23,9 +23,15 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index' %}">Commonhold</a>
-            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'overview' %}">Commonhold</a>
+                </li>
+            {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'index' %}">Commonhold</a>
+                </li>
+            {% endif %}
             {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'overview' %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
@@ -72,7 +78,7 @@
             </li>
         {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'SignIn' %}">SignIn</a>
+                <a class="nav-link" href="{% url 'SignIn' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> SignIn</a>
             </li>
         {% endif %}
         </ul>
