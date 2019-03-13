@@ -29,27 +29,21 @@ def blog_like(request, pk):
     given like on a blog
     """
     if request.user.is_authenticated:
-        users = User.objects.all()
         blogid = Blog.objects.get(pk=pk)
         userid = User.objects.get(pk=request.user.id)
-        
         likes = BlogLike.objects.filter(BlogLikeId=pk)
-        comment_form = BlogCommentForm()
         
         if likes:
             for like in likes:
                 if like.BlogLikedBy == userid:
                     BlogLike.objects.filter(BlogLikeId=blogid, 
                                             BlogLikedBy=userid).delete()
-                    thumb = False
                 else:
                     BlogLike.objects.create(BlogLikeId=blogid, 
                                             BlogLikedBy=userid) 
-                    thumb = True
         else:
             BlogLike.objects.create(BlogLikeId=blogid, BlogLikedBy=userid)
-            thumb = True
-       
+
         return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
     else:
         messages.success(request, "You are supposed to be logged in to like that!")
@@ -88,7 +82,6 @@ def blog_detail(request, pk):
 
 def blogpost_comment(request, pk):
     userid = User.objects.get(pk=request.user.id)
-    blogid = Blog.objects.get(pk=pk)
     if request.method =="POST":
         form = BlogCommentForm(request.POST)
         if form.is_valid():

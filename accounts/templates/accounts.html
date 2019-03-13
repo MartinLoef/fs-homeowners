@@ -26,8 +26,10 @@
                     <td>{{user.last_login}}</td>
                     <td>{{user.is_active}}</td>
                     <td>{{user.date_joined}}</td>
+                    {% if user.username != "admin" %}
                     <td><a href="{% url 'suspend' user.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Suspend</a></td>
                     <td><a href="{% url 'activate' user.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Activate</a></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
