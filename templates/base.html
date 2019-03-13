@@ -26,11 +26,11 @@
         <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'overview' %}">Commonhold</a>
+                    <a class="nav-link" href="{% url 'overview' %}">CH</a>
                 </li>
             {% else %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'index' %}">Commonhold</a>
+                    <a class="nav-link" href="{% url 'index' %}">CH</a>
                 </li>
             {% endif %}
             {% if user.is_authenticated %}
@@ -44,7 +44,7 @@
                 <a class="nav-link" href="{% url 'get_events' %}"><i class="fa fa-calendar" aria-hidden="true"></i> Events</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'orderhistory' %}"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Orderhistory</a>
+                <a class="nav-link" href="{% url 'orderhistory' %}"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Orders</a>
             </li>
             
             {% endif %}

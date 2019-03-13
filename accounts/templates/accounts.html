@@ -1,43 +1,59 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row justify-content-md-center">
-    <div class="col-md-10">
-        <table class="table table-hover font-white bg-dark">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Is_Staff</th>
-                    <th scope="col">Last_Login</th>
-                    <th scope="col">Is_Active</th>
-                    <th scope="col">Date_Joined</th>
-                    <th scope="col">Suspend</th>
-                    <th scope="col">Activate</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{user.id}}</td>
-                    <td>{{user.username}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.is_staff}}</td>
-                    <td>{{user.last_login}}</td>
-                    <td>{{user.is_active}}</td>
-                    <td>{{user.date_joined}}</td>
-                    {% if user.username != "admin" %}
-                    <td><a href="{% url 'suspend' user.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Suspend</a></td>
-                    <td><a href="{% url 'activate' user.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Activate</a></td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-            </tbody>
+<div class="container">
+    <h3 class="pb-3 mb-4 font-italic border-bottom">
+        User Overview
+    </h3>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+                <div class="card-body bg-secondary flex-column less-padding-bottom">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 mx-auto">
+                            <div class="card no-flex flex-md-row mb-4 shadow-sm h-md-250 bg-light">
+                                <table class="table table-hover font-white bg-dark">
+                                    <thead>
+                                        <tr>
+                                            <!--<th scope="col">ID</th>-->
+                                            <th scope="col">Username</th>
+                                            <!--<th scope="col">Email</th>-->
+                                            <!--<th scope="col">Is_Staff</th>-->
+                                            <!--<th scope="col">Last_Login</th>-->
+                                            <th scope="col">Is_Active</th>
+                                            <!--<th scope="col">Date_Joined</th>-->
+                                            <th scope="col">Action</th>
+                                            <!--<th scope="col">Activate</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                            <!--<td>{{user.id}}</td>-->
+                                            <td>{{user.username}}</td>
+                                            <!--<td>{{user.email}}</td>-->
+                                            <!--<td>{{user.is_staff}}</td>-->
+                                            <!--<td>{{user.last_login}}</td>-->
+                                            <td>{{user.is_active}}</td>
+                                            <!--<td>{{user.date_joined}}</td>-->
+                                            {% if user.username != "admin" %}
+                                                {% if user.is_active %}
+                                                    <td><a href="{% url 'suspend' user.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Suspend</a></td>
+                                                {% else %}
+                                                    <td><a href="{% url 'activate' user.id %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Activate</a></td>
+                                                {% endif %}
+                                            {% endif %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
         </table>
-        <span class="pull-right">
-            <a href="{% url 'registration' %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Add an User</a>
-        </span>
-            
+                                <span class="pull-right">
+                                    <a href="{% url 'registration' %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Add an User</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
