@@ -12,8 +12,6 @@ from django.utils import timezone
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
-from accounts.models import UserProfile
-from accounts.forms import UserProfileForm
 from blogs.models import Blog, BlogComment
 from events.models import Event, EventComment
 
