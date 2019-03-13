@@ -66,13 +66,13 @@ For user stories and wireframe mockups created as part of this project, see the 
 - Navbar containing links to (when not authenticated):  
    **a.** homepage / index page<br> 
    **b.** sign-in page  
-- Navbar containing links to (when authenticated as normal user:  
+- Navbar containing links to (when authenticated as normal user):  
    **a.** homepage / index page <br>
    **b.** OrderHistory <br>
    **c.** Blogs <br>
    **d.** Events<br>
    **e.** Cart<br>
-- Navbar containing links to (when authenticated as Admin user:  
+- Navbar containing links to (when authenticated as Admin user):  
    **a.** homepage / index page <br>
    **b.** OrderHistory <br>
    **c.** Blogs <br>
@@ -171,7 +171,7 @@ Needed to get it all to work
 3.	Github Repository (https://github.com/)
 5.	Create a email address (https://accounts.google.com)
 6.	AWS S3 (https://aws.amazon.com)
-7.	Stripe dev account (https://stripe.com/)
+7.	Stripe dev account (https://stripe.com/)<br>
 
 
 1.	Cloud9<br>
@@ -220,7 +220,7 @@ Needed to get it all to work
 		MEDIA_ROOT = (
 			os.path.join(BASE_DIR, 'media'),
         )
-	d.	Create requirements.txt Run command $ pip3 freeze --local > requirements.txt
+	d.	Create requirements.txt Run command $ pip3 freeze --local > requirements.txt<br>
 	e.	Create Procfile and custom_storages.py in root directory<br>
 	f.	IF AWS IS ALREADY IN PLACE: Collect static files and upload to S3 by running $ python3 manage.py collectstatic
 	
@@ -231,7 +231,7 @@ Needed to get it all to work
 	c.	add github repository master to your work environment<br>
 	d.	git add ., git commit -m "your message", git push origin master<br>
 	
-3.	Heroku
+3.	Heroku<br>
 	a.	Add an App to your account<br>
 	b.	Link it to your github repository<br>
 	c.	Go to settings and add the Variables to it<br>
