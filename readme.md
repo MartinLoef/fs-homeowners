@@ -157,6 +157,8 @@ After deploying to Heroku i found out that i had 2 different MEDIA_URL's defined
 
 The question actually isare these things really bugs or just extra knowledge?
 
+## Deployment
+[**See Deployment.md file**](https://github.com/MartinLoef/fs-homeowners/blob/master/deployment.md).<br>
 
 
 ## Credits
