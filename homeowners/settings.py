@@ -135,7 +135,7 @@ EMAIL_PORT = 587
 
 #DTAP check
 
-if os.getenv('ENVTYPE') != 'Prod':
+if os.getenv('DTAP') != 'Prod':
     print('Running on Cloud9 <DEV> or Travis <Tests>\n\nUsing local data')
     # Database local
     DATABASES = {
