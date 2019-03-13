@@ -86,20 +86,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'homeowners.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-if "DATABASE_URL" in os.environ:
-    DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) }
-else:
-    print("Database URL not found. Using SQLite instead")
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -132,42 +118,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-AWS_S3_OBJECT_PARAMETERS = {
-    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT', 
-    'CacheControl': 'max-age-=94608000'
-}
-
-AWS_STORAGE_BUCKET_NAME = 'commonhold'
-AWS_S3_REGION_NAME = 'eu-west-1'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-
-STATICFILES_LOCATION = 'static'
-STATICFILES_STORAGE = 'custom_storages.StaticStorage'
-
-MEDIAFILES_LOCATION = 'media'
-DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
-MEDIA_URL = 'https://%s/%s/' % (
-    AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-MEDIA_ROOT = (
-    os.path.join(BASE_DIR, 'media'),
-    )
-
+# Added Variables to the OS
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
 
 STRIPE_PUBLISHABLE = os.getenv('STRIPE_PUBLISHABLE')
 STRIPE_SECRET = os.getenv('STRIPE_SECRET')
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -176,3 +131,59 @@ EMAIL_HOST_USER = os.getenv('EMAIL_ADDRESS')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
 EMAIL_PORT = 587
+
+
+#DTAP check
+
+if os.getenv('ENVTYPE') != 'Prod':
+    print('Running on Cloud9 <DEV> or Travis <Tests>\n\nUsing local data')
+    # Database local
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+    # Static files (CSS, JavaScript, Images) local
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static")
+    ]
+    
+
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+        
+        
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
+else:
+    print('Running on Heroku <PROD>\n\nUsing PostGres DB'
+        + '\nUsing AWS for static files')
+    # Database Heroku
+    DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) }
+
+    AWS_S3_OBJECT_PARAMETERS = {
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT', 
+        'CacheControl': 'max-age-=94608000'
+    }
+    #Amazon S3 config
+    
+    AWS_STORAGE_BUCKET_NAME = 'commonhold'
+    AWS_S3_REGION_NAME = 'eu-west-1'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    
+    STATICFILES_LOCATION = 'static'
+    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+    
+    MEDIAFILES_LOCATION = 'media'
+    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+    
+    MEDIA_URL = 'https://%s/%s/' % (
+        AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+    MEDIA_ROOT = (
+        os.path.join(BASE_DIR, 'media'),
+        )
+
+    

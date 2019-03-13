@@ -8,6 +8,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from .forms import ContactForm
 
+import os
+
 def contact(request):
     """
     Process the contact form and send mails to admins,
@@ -28,7 +30,7 @@ def contact(request):
                         'form_content': form.cleaned_data['content'],
                     })
                 mail_subject = 'Contactform: ' + form.cleaned_data['subject']
-                email_to = 'commonholdproject@gmail.com'
+                email_to = os.getenv('EMAIL_ADDRESS')
                 email = EmailMessage(
                     mail_subject, message, to=[email_to])
                 email.content_subtype = 'html'
