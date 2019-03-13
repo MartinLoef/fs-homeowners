@@ -30,12 +30,12 @@ HomeOwners can post blogs about things that are happing in and around the appart
 Also events can be created/posted which are free to join, or where (extra) payment is needed for.
 
 Events can be like:
-- Clean up the garage together
-- Maintain the shared garden
-- Organize a new year's drink
-- Organize a BBQ for the complex
-- When is garbage collected
-- Next Annual VvE meeting
+- Clean up the garage together (Join option instead of Subscribe with payment option)
+- Maintain the shared garden (Join option instead of Subscribe with payment option)
+- Organize a new year's drink (Subscribe with payment)
+- Organize a BBQ for the complex (Subscribe with payment)
+- When is garbage collected 
+- Next Annual VvE meeting (Join option instead of Subscribe with payment option)
 
 <b>Important thing to remind is that it is a closed community, where you can not sign up as an outsider.
 The board of the VvE is the only authority to add and remove users to this site.</b>
@@ -43,12 +43,68 @@ The board of the VvE is the only authority to add and remove users to this site.
 For the project, **Django** was used as framework, with **Heroku** for hosting the site and database and **Amazon (AWS)** for file storage.
 
 ## UX
+With a site that is aimed at fpr closed communities, the sign up should be limited. The only way a user should be able to join
+a site like this, is when the board of owners can acknowledge that the user is indeed a new resident. A contact option would be 
+a nice way to get in touch.
+
+The other goals are that members should be able to post blogs and events. This will most likely be done on a small device
+when people are sitting on the couch, bed or any other travelling spot.
+
+In case of organized events, on behalf of the board, a cart and payment options should be in place in order to handle these kind 
+of functionality.
+
+The site has a main focus on the smaller devices instead of the larger devices.
+
+#### Wireframe and User Stories
+For user stories and wireframe mockups created as part of this project, see the [**Word document**]
 
 ## Features
 ### Existing Features
+- Opening page with a with a picture of a appartment complex (currently the on I live in)  
+   **a.** Sign In Button to the login page <br>
+   **b.** Button to open the contact form in case of no account
+- Navbar containing links to (when not authenticated):  
+   **a.** homepage / index page<br> 
+   **b.** sign-in page  
+- Navbar containing links to (when authenticated as normal user:  
+   **a.** homepage / index page <br>
+   **b.** OrderHistory <br>
+   **c.** Blogs <br>
+   **d.** Events<br>
+   **e.** Cart<br>
+- Navbar containing links to (when authenticated as Admin user:  
+   **a.** homepage / index page <br>
+   **b.** OrderHistory <br>
+   **c.** Blogs <br>
+   **d.** Events<br>
+   **e.** Add User <br>
+   **f.** Registered Users Overview<br>
 
+- Overview page shows<br>
+  **a.** the next 5 upcoming events<br>
+  **b.** the latest posted blog<br>
+  **b.** the newest added event<br>
+
+- Contact form transcript is only mailed to the registered mail account from the appartment board
+- Cart page linking to checkout page
+- Blog page showing all blogs
+- Event page showing all events
+- OrderHistory page showing all orders that were done by that user
+- Checkout with (test) payment system for credit card using Stripe
+- Mail sent to user after checkout with list of items, submitted address and order ID
+- Staff / Admin page added into the site  
+   **a.** Register / Add User --> new mamber will receive an email that accout is created (has to go password reset functionality) 
+   **b.** Activate or suspend User  
+- Standard Django admin pages allow addition, change or deletion of events, blogs, users, comments, orders  
+- Account owners can reset their passwords themselves via the 'I forgot my login option' on the signin page. 
 
 ### Features Left to Implement
+- Overview of payed subscribers for events (so other people know who is going)
+- Add emoticons to comments
+- Edit possibility of a comment when you are the writer of the comment
+- Further Mail styling
+- Upgrade to Stripe v3
+- Add more payment options (and receivers --> organizer vs VvE bankaccount)
 
 ## Technologies Used
 - **HTML**, **CSS**, **Javascript/jQuery**, **Python** were all at the heart of things
@@ -65,3 +121,60 @@ For the project, **Django** was used as framework, with **Heroku** for hosting t
    *No actual payments can be made*
 - [**JQuery**](https://jquery.com) - The project uses **JQuery** to simplify DOM manipulation.  
    *Additional javascript was used to perform some enhancements as well, for accordion and modal behavior.*
+
+## Testing
+Testing the site has been ongoing from the very start, with each and every addition tested manually and/or automated with the help of
+[**Travis CI**](https://travis-ci.org/).  
+In my opiion every aspect of the site was extensively manually tested.
+
+In the [**Word document**]()
+in the root of the repository, a chapter is dedicated to the tests, including screenshots of manual testing, 
+overview of automated tests and the result as Travis relays.  
+Some app's contain a `tests.py` file. In order to run all tests manually instead of using Travis, 
+go to a terminal prompt, and enter `python3 manage.py test` to run all tests.  
+In order to run tests for a specific app, enter (e.g.) `python3 manage.py products` where products is the app to run the tests for.
+
+Testing (manually) was done every step of development, as well as automated (in a later stadium) using **[Travis](https://travis-ci.org)**
+
+### Scaling on the different browsers / devices
+The site has been tested on multiple environments:  
+   **a.** Google Chrome (Desktop) - *both direct and using developer tools to emulate devices*  
+   **b.** Safari (Desktop)  
+   **c.** Google Chrome (Mobile) - *installed on iPhone 8 and iPad (2018)*  
+   **d.** Safari (Mobile) - *installed on iPhone 8 and iPad (2018)*  
+   **e.** Opera (Mobile)
+   **f.** Developer tools - *emulated versions of Pixel 2 (XL), iPhone 6/7/8(Plus) and X and iPad(Pro)*
+
+Scaling on all devices works as intended. The site does not scale well to the old phone models(iPhone 5, Galxy S5). 
+Because these are not very common phones anymore i didnt go to the limit to make the site also on those devices perfect.
+I choose to focus on most common devices instead of (semi-)obsolete mobile phones.
+
+### Bugs encountered
+Actually all bugs i have ran into, were thanks to my own stupidity and stuborness.
+These bugs were correct along the way the site progressed and after posting, viewing, liking events and blogs during manual tests (feels like a 1000 times)
+
+After deploying to Heroku i found out that i had 2 different MEDIA_URL's defined. Which gave me some headache before i found that.
+
+The question actually isare these things really bugs or just extra knowledge?
+
+## Deployment
+
+For a description of the deployment process, see the corresponding chapter in the 
+[**Word document**]() located in the root of the repository.
+This chapter describes the current deployment, as well as the environment variables required in order to run the code locally.
+
+## Credits
+
+### Content
+Content of the site is all self written based on the things i have encountered during the time I live in appartment complexes
+
+### Media 
+To mention something about this subject, i have used the bootstrap sites, facebook.com to get ideas about how to style and lay-out
+this page. This is show by the amount of custom made css which is very low (in my opinion)
+
+### Acknowledgements
+My girlfriend which had to put up with me during my 'WTF why isnt this working' moments.<br>
+Support from the tutors and teachers from [**Code Institute**](https://codeinstitute.net).<br>
+Amazing CSS styles invented and made public useable by [**BootstrapCSS**](https://getbootstrap.com/)<br>
+StackOverflow community for all my (stupid) questions [**Stackoverflow**](https://stackoverflow.com/)<br>
+
