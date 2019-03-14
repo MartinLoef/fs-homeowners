@@ -1,4 +1,5 @@
 env_var.py
 static/
 media/
+db.sqlite3
 

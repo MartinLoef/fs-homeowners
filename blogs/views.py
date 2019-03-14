@@ -84,6 +84,7 @@ def blogpost_comment(request, pk):
     userid = User.objects.get(pk=request.user.id)
     if request.method =="POST":
         form = BlogCommentForm(request.POST)
+        print(form)
         if form.is_valid():
             userid = User.objects.get(pk=request.user.id)
             blog = get_object_or_404(Blog, pk=pk)
@@ -108,14 +109,16 @@ def create_or_edit_blog(request, pk=None):
         formtype = "Edit a Blog"
         
     if request.method =="POST":
-        print("form is a post")
+
         form = BlogPostForm(request.POST, request.FILES, instance=blog)
         bp_form = form.save(commit=False)
         bp_form.author = User.objects.get(pk=request.user.id) 
-        bp_form.save()
-        return redirect(get_blogs)
+
+        if bp_form.is_valid:
+            bp_form.save()
+            return redirect(get_blogs)
     else:
-        print("form is a get")
+
         form = BlogPostForm(instance=blog)
         
     return render(request, "blogpostform.html", {'form': form, 'formtype': formtype})
