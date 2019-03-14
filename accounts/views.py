@@ -24,15 +24,19 @@ def index(request):
     else:
         return render(request, "index.html")
 
-@login_required
 def overview(request):
     """return overview.html"""
-    blogs = Blog.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
-    events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
-    upcoming_events = Event.objects.filter(scheduled_date_start__gte=timezone.now()).order_by('scheduled_date_start')[:4]
-    blog_comments = BlogComment.objects.all()
-    event_comments = EventComment.objects.all()
-    return render(request, "overview.html", {'blogs': blogs, 'events': events,  'event_comments': event_comments, 'blog_comments': blog_comments, 'upcoming_events': upcoming_events })
+    if request.user.is_authenticated:
+        blogs = Blog.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
+        events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
+        upcoming_events = Event.objects.filter(scheduled_date_start__gte=timezone.now()).order_by('scheduled_date_start')[:4]
+        blog_comments = BlogComment.objects.all()
+        event_comments = EventComment.objects.all()
+        return render(request, "overview.html", {'blogs': blogs, 'events': events,  
+                    'event_comments': event_comments, 'blog_comments': blog_comments, 
+                    'upcoming_events': upcoming_events })
+    else:
+        return redirect(reverse('index'))
 
 def logout(request):
     """log user out"""
@@ -67,34 +71,40 @@ def SignIn(request):
 
     return render(request, 'SignIn.html', {'login_form': login_form})
 
-@login_required
 def registration(request):  
     """
     form to register en new user to the site, 
     can only be done by an administrator
     """
-    if request.method == "POST":
-        register_form = UserRegistrationForm(request.POST)
-        if register_form.is_valid():
-            user = register_form.save(commit=False)
-            user.is_active = True
-            user.save()
-            current_site = get_current_site(request)
-            message = render_to_string('signup.html', {
-                'user':user, 
-                'domain':current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
-            mail_subject = 'We have created an new Commonhold account for you, please activate'
-            to_email = register_form.cleaned_data.get('email')
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
-            return redirect(reverse('accounts'))
+    
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            if request.method == "POST":
+                register_form = UserRegistrationForm(request.POST)
+                if register_form.is_valid():
+                    user = register_form.save(commit=False)
+                    user.is_active = True
+                    user.save()
+                    current_site = get_current_site(request)
+                    message = render_to_string('signup.html', {
+                        'user':user, 
+                        'domain':current_site.domain,
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': account_activation_token.make_token(user),
+                    })
+                    mail_subject = 'We have created an new Commonhold account for you, please activate'
+                    to_email = register_form.cleaned_data.get('email')
+                    email = EmailMessage(mail_subject, message, to=[to_email])
+                    email.send()
+                    return redirect(reverse('accounts'))
+            else:
+                register_form = UserRegistrationForm()
+            return render(request, 'registration.html', 
+                    {'register_form': register_form})
+        else:
+            return redirect(reverse('index'))
     else:
-        register_form = UserRegistrationForm()
-    return render(request, 'registration.html', 
-            {'register_form': register_form})
+        return redirect(reverse('index'))
 
 def accounts(request):
     if request.user.is_authenticated:
@@ -105,17 +115,29 @@ def accounts(request):
         return redirect(reverse('index'))
 
 def user_suspend(request, pk):
-    userid = User.objects.get(pk=pk)
-    if userid:
-        userid.is_active = False
-        userid.save()
-        messages.success(request, "You suspended the account!")
-        return HttpResponseRedirect(reverse('accounts'))
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            userid = User.objects.get(pk=pk)
+            if userid:
+                userid.is_active = False
+                userid.save()
+                messages.success(request, "You suspended the account!")
+                return HttpResponseRedirect(reverse('accounts'))
+        else:
+            return redirect(reverse('index'))
+    else:
+        return redirect(reverse('index'))
 
 def user_activate(request, pk):
-    userid = User.objects.get(pk=pk)
-    if userid:
-        userid.is_active = True
-        userid.save()
-        messages.success(request, "You Activated the account!")
-        return HttpResponseRedirect(reverse('accounts'))
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            userid = User.objects.get(pk=pk)
+            if userid:
+                userid.is_active = True
+                userid.save()
+                messages.success(request, "You Activated the account!")
+                return HttpResponseRedirect(reverse('accounts'))
+        else:
+            return redirect(reverse('index'))
+    else:
+        return redirect(reverse('index'))
