@@ -21,8 +21,7 @@ def get_blogs(request):
         return render(request, "blogposts.html", {'blogs': blogs})
     else:
         return redirect(reverse('index'))
-   
-@login_required
+
 def blog_like(request, pk):
     """
     users can like or remove an earlier 
@@ -77,59 +76,69 @@ def blog_detail(request, pk):
                     'likes': likes, 'thumb': thumb})
         
     else:
-        messages.success(request, "You are supposed to be logged in to see that!")
         return redirect(reverse('index'))
 
 def blogpost_comment(request, pk):
-    userid = User.objects.get(pk=request.user.id)
-    if request.method =="POST":
-        form = BlogCommentForm(request.POST)
-        print(form)
-        if form.is_valid():
-            userid = User.objects.get(pk=request.user.id)
-            blog = get_object_or_404(Blog, pk=pk)
-            BlogComment.objects.create(blogid=blog, authorid=userid, 
-                                        blog_comment=form.cleaned_data['Blog_comment'])
-            return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
+    if request.user.is_authenticated:
+        userid = User.objects.get(pk=request.user.id)
+        if request.method =="POST":
+            form = BlogCommentForm(request.POST)
+            print(form)
+            if form.is_valid():
+                userid = User.objects.get(pk=request.user.id)
+                blog = get_object_or_404(Blog, pk=pk)
+                BlogComment.objects.create(blogid=blog, authorid=userid, 
+                                            blog_comment=form.cleaned_data['Blog_comment'])
+                return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
+            else:
+                return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
         else:
             return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
     else:
-        return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
+        return redirect(reverse('index'))
     
 def create_or_edit_blog(request, pk=None):
     """
     Form view to support the possibility to add
     or edit blogs
     """
+    if request.user.is_authenticated:
+        blog = get_object_or_404(Blog, pk=pk) if pk else None
+        if blog == None:
+            formtype = "Add a Blog"
+        else:
+            formtype = "Edit a Blog"
+            
+        if request.method =="POST":
     
-    blog = get_object_or_404(Blog, pk=pk) if pk else None
-    if blog == None:
-        formtype = "Add a Blog"
-    else:
-        formtype = "Edit a Blog"
+            form = BlogPostForm(request.POST, request.FILES, instance=blog)
+            bp_form = form.save(commit=False)
+            bp_form.author = User.objects.get(pk=request.user.id) 
+            bp_form.save()
+            return redirect(get_blogs)
+        else:
+    
+            form = BlogPostForm(instance=blog)
         
-    if request.method =="POST":
-
-        form = BlogPostForm(request.POST, request.FILES, instance=blog)
-        bp_form = form.save(commit=False)
-        bp_form.author = User.objects.get(pk=request.user.id) 
-        bp_form.save()
-        return redirect(get_blogs)
+        return render(request, "blogpostform.html", {'form': form, 'formtype': formtype})
     else:
-
-        form = BlogPostForm(instance=blog)
-        
-    return render(request, "blogpostform.html", {'form': form, 'formtype': formtype})
+        return redirect(reverse('index'))
 
 def delete_blog(request, pk):
-    blog = get_object_or_404(Blog, pk=pk)
-    blog.delete()
-    return redirect(reverse('get_blogs'))
-
+    if request.user.is_authenticated:
+        blog = get_object_or_404(Blog, pk=pk)
+        blog.delete()
+        return redirect(reverse('get_blogs'))
+    else:
+        return redirect(reverse('index'))
+        
 def delete_blog_comment(request, pk):
-    blogcomment = BlogComment.objects.get(pk=pk)
-    blog = blogcomment.blogid
-    blogid = blog.id
-    blogcomment.delete()
-    return HttpResponseRedirect(reverse('blog_detail', args=(blogid,)))
+    if request.user.is_authenticated:
+        blogcomment = BlogComment.objects.get(pk=pk)
+        blog = blogcomment.blogid
+        blogid = blog.id
+        blogcomment.delete()
+        return HttpResponseRedirect(reverse('blog_detail', args=(blogid,)))
+    else:
+        return redirect(reverse('index'))
     
