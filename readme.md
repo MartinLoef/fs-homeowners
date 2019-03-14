@@ -55,7 +55,11 @@ of functionality.
 
 The site has a main focus on the smaller devices instead of the larger devices.
 
-#### Wireframe and User Stories
+## Database Design
+<img src="https://github.com/MartinLoef/fs-homeowners/blob/master/readme_screenshots/db_schema/db_schema.png" width=100%  alt="Architecture">
+
+
+## Wireframes and User Stories
 For user stories and wireframe mockups created as part of this project, see the [**Word document**]
 
 ## Features
