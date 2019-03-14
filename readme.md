@@ -125,16 +125,9 @@ For user stories and wireframe mockups created as part of this project, see the 
 ## Testing
 Testing the site has been ongoing from the very start, with each and every addition tested manually and/or automated with the help of
 [**Travis CI**](https://travis-ci.org/).  
-In my opiion every aspect of the site was extensively manually tested.
+In my opinion every aspect of the site was extensively manually tested.
 
-In the [**Word document**]()
-in the root of the repository, a chapter is dedicated to the tests, including screenshots of manual testing, 
-overview of automated tests and the result as Travis relays.  
-Some app's contain a `tests.py` file. In order to run all tests manually instead of using Travis, 
-go to a terminal prompt, and enter `python3 manage.py test` to run all tests.  
-In order to run tests for a specific app, enter (e.g.) `python3 manage.py products` where products is the app to run the tests for.
-
-Testing (manually) was done every step of development, as well as automated (in a later stadium) using **[Travis](https://travis-ci.org)**
+[**See Deployment.md file**](https://github.com/MartinLoef/fs-homeowners/blob/master/manual_test.md).<br>
 
 ### Scaling on the different browsers / devices
 The site has been tested on multiple environments:  
