@@ -1,4 +1,4 @@
-# [Commonhold website](https://commonhold.herokuapp.com/)
+# [Click here for the Commonhold website](https://commonhold.herokuapp.com/)
 
 Travis says:<br>
 [![Build Status](https://travis-ci.com/MartinLoef/fs-homeowners.svg?branch=master)](https://travis-ci.com/MartinLoef/fs-homeowners)
@@ -143,6 +143,7 @@ For user stories and wireframe mockups created as part of this project, see the 
 - Further Mail styling
 - Upgrade to Stripe v3
 - Add more payment options (and receivers --> organizer vs VvE bankaccount)
+- specific HTTP error type redirects
 
 ## Technologies Used
 - **HTML**, **CSS**, **Javascript/jQuery**, **Python** were all at the heart of things
@@ -199,7 +200,7 @@ Content of the site is all self written based on the things i have encountered d
 
 ### Media 
 To mention something about this subject, i have used the bootstrap sites, facebook.com to get ideas about how to style and lay-out
-this page. This is show by the amount of custom made css which is very low (in my opinion)
+this page. This is shown by the amount of custom made css which is very low (in my opinion)
 
 ### Acknowledgements
 My girlfriend which had to put up with me during my 'WTF why isnt this working' moments.<br>
