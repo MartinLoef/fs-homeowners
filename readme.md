@@ -55,11 +55,35 @@ of functionality.
 
 The site has a main focus on the smaller devices instead of the larger devices.
 
+## User Stories 
+User Stories VvE Site:
+
+1. <done> As a VvE i want the site to be closed subscription because it contains data that belongs to only those who live in the shared appartment complex
+2. <done> As a VvE i want to be able to add and suspend users to the site
+3. <done> As a VvE i want that users can reset their passwords themselves
+4. <done> As a VvE i want to be able to delete and add content to the page
+5. <done> As a VvE i want to be able to offer payment options to the site in order to receive automatically money on event subscriptions
+
+1. <done> As a user i want to be able to create and delete(my) blogs
+2. <done> As a user i want to be abe to create and delete (my) events 
+3. <done> As a user i want to be able to reset my passwords
+4. <done> As a user i want to be able to join, like or subscribe to blogs or events  
+5. <done> As a user i want that my orders are only visible for myself
+6. <done> As a user i want to see who joined free events
+7. <done> As a user i want to be able to pay with a credit card for payed events 
+
+Manual check section will show what and who is able to do what on the site.
+
+
 ## Database Design
+Herunder an impression how the database should look like.
+It is purely an impression how it should be connected to each other.
+Please dont hang me up on the relations(Foreign keys etc) visible in this picture because it wasn;t the goal to make a perfect DB schema map, but just as a mockup.
+
 <img src="https://github.com/MartinLoef/fs-homeowners/blob/master/readme_screenshots/db_schema/db_schema.png" width=100%  alt="Architecture">
 
 
-## Wireframes and User Stories
+## Wireframess
 For user stories and wireframe mockups created as part of this project, see the [**Word document**]
 
 ## Features
@@ -101,6 +125,8 @@ For user stories and wireframe mockups created as part of this project, see the 
    **b.** Activate or suspend User  
 - Standard Django admin pages allow addition, change or deletion of events, blogs, users, comments, orders  
 - Account owners can reset their passwords themselves via the 'I forgot my login option' on the signin page. 
+- Example of mail that are send by the site can be viewed at: [here](https://github.com/MartinLoef/fs-homeowners/blob/master/readme_screenshots/mail/)
+
 
 ### Features Left to Implement
 - Overview of payed subscribers for events (so other people know who is going)
