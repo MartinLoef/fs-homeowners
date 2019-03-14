@@ -3,6 +3,8 @@
 Travis says:<br>
 [![Build Status](https://travis-ci.com/MartinLoef/fs-homeowners.svg?branch=master)](https://travis-ci.com/MartinLoef/fs-homeowners)
 
+
+## What you have to know about the project and VvE(commonholds)
 This is the fourth project created for the Full Stack Web Developer course by [**Code Institute**](https://codeinstitute.net).<br>
 
 The goal here was to create a full stack application, using Django with multiple apps and (in my case) a PostGres database.  
@@ -41,6 +43,12 @@ Events can be like:
 The board of the VvE is the only authority to add and remove users to this site.</b>
 
 For the project, **Django** was used as framework, with **Heroku** for hosting the site and database and **Amazon (AWS)** for file storage.
+
+## Biggest Lessons Learned
+The biggest lessons i have learned during this project are:
+1. Never push your ENV variables with secret keys to Github. I made this mistake with secret values from the AWS site. This resulted within 15 minutes with a mail and phonecall from Amazon that my credentials
+were compromised. I needed to make a new key with new values, and most complicated thing was to remove the env file from all previous commits in github.
+2. Never try to push files larger than 50MB to github, it doesn't like that (i made a MP4 video as a demo with a size of 130 MB). It took a while to remove that from the local Git repo.
 
 ## UX
 With a site that is aimed at fpr closed communities, the sign up should be limited. The only way a user should be able to join
@@ -198,4 +206,4 @@ My girlfriend which had to put up with me during my 'WTF why isnt this working' 
 Support from the tutors and teachers from [**Code Institute**](https://codeinstitute.net).<br>
 Amazing CSS styles invented and made public useable by [**BootstrapCSS**](https://getbootstrap.com/)<br>
 StackOverflow community for all my (stupid) questions [**Stackoverflow**](https://stackoverflow.com/)<br>
-
+Database mockup made with [**SqlDBM - Online Database Modeler**](https://app.sqldbm.com/)
