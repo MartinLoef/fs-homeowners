@@ -7,89 +7,99 @@ from .models import Event, EventLike, EventComment, User, EventJoin
 from .forms import EventPostForm, EventCommentForm
 from django.contrib.auth.decorators import login_required
 
+"""All views to manage the add, edit, delete, comment 
+like, join functionality for Events
+"""
 
-@login_required
 def create_or_edit_event(request, pk=None):
-    """"""
-    event = get_object_or_404(Event, pk=pk) if pk else None
-    if event == None:
-        formtype = "Add an Event"
-    else:
-        formtype = "Edit an Event"
-    
-    if request.method =="POST":
-        print("form is a post")
+    """based on the type of post the create an event
+    or delete an event"""
+    if request.user.is_authenticated:
+        event = get_object_or_404(Event, pk=pk) if pk else None
+        if event == None:
+            formtype = "Add an Event"
+        else:
+            formtype = "Edit an Event"
         
-        form = EventPostForm(request.POST, request.FILES, instance=event)
-        ep_form = form.save(commit=False)
-        ep_form.author = User.objects.get(pk=request.user.id) 
-        ep_form.save()
-        return redirect(get_events)
+        if request.method =="POST":
+            print("form is a post")
+            
+            form = EventPostForm(request.POST, request.FILES, instance=event)
+            ep_form = form.save(commit=False)
+            ep_form.author = User.objects.get(pk=request.user.id) 
+            ep_form.save()
+            return redirect(get_events)
+        else:
+            print("form is a get")
+            form = EventPostForm(instance=event)
+        return render(request, "eventpostform.html", {'form': form, 'formtype': formtype})
     else:
-        print("form is a get")
-        form = EventPostForm(instance=event)
-    return render(request, "eventpostform.html", {'form': form, 'formtype': formtype})
-
-@login_required
+        messages.success(request, "You are supposed to be logged in to edit that!")
+        return redirect(reverse('index'))
+        
 def get_events(request):
     """eventposts.html"""
+    if request.user.is_authenticated:
+        events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+        return render(request, "eventposts.html", {'events': events})
+    else:
+        return redirect(reverse('index'))
     
-    events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-    return render(request, "eventposts.html", {'events': events})
-
-@login_required
 def event_detail(request, pk):
     """
     request the event detail page
     post possibility for comments on the blog
     """
-    userid = User.objects.get(pk=request.user.id)
-    event = get_object_or_404(Event, pk=pk)
-    users = User.objects.all()
-    likes = EventLike.objects.filter(EventLikeId=pk)
-    joins = EventJoin.objects.filter(EventJoinId=pk)
-    jointhumb = False
-    thumb = False
-    if joins:
-        for join in joins:
-            if join.EventJoinBy == userid:
-                jointhumb = True
-    else:
+    if request.user.is_authenticated:
+        userid = User.objects.get(pk=request.user.id)
+        event = get_object_or_404(Event, pk=pk)
+        users = User.objects.all()
+        likes = EventLike.objects.filter(EventLikeId=pk)
+        joins = EventJoin.objects.filter(EventJoinId=pk)
         jointhumb = False
-    
-    if likes:
-        for like in likes:
-            if like.EventLikedBy == userid:
-                thumb = True
-    else:
         thumb = False
-
-    comments = EventComment.objects.filter(eventid=pk)
-    comment_form = EventCommentForm()
-    event.views += 1
-    event.save()
-    return render(request, "eventdetail.html", {'comment_form': 
-                    comment_form, 'event': event, 'comments': comments, 
-                    'users': users, 'likes': likes, 'thumb': thumb, 'jointhumb': jointhumb, 'joins': joins})
-
-@login_required
-def event_comment(request, pk):
-    userid = User.objects.get(pk=request.user.id)
-    event = get_object_or_404(Event, pk=pk)
-    if request.method =="POST":
-        form = EventCommentForm(request.POST)
-        if form.is_valid():
-            EventComment.objects.create(eventid=event, author=userid, 
-                                        event_comment=form.cleaned_data['event_comment']) 
-            
-            comments = EventComment.objects.filter(eventid=pk)
-            comment_form = EventCommentForm()
-            return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+        if joins:
+            for join in joins:
+                if join.EventJoinBy == userid:
+                    jointhumb = True
         else:
-            messages.success(request, "You are supposed to be logged in to comment on that!")
-            return redirect(reverse('index'))
+            jointhumb = False
+        
+        if likes:
+            for like in likes:
+                if like.EventLikedBy == userid:
+                    thumb = True
+        else:
+            thumb = False
+    
+        comments = EventComment.objects.filter(eventid=pk)
+        comment_form = EventCommentForm()
+        event.views += 1
+        event.save()
+        return render(request, "eventdetail.html", {'comment_form': 
+                        comment_form, 'event': event, 'comments': comments, 
+                        'users': users, 'likes': likes, 'thumb': thumb, 
+                        'jointhumb': jointhumb, 'joins': joins})
     else:
-        return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+        return redirect(reverse('index'))
+
+def event_comment(request, pk):
+    if request.user.is_authenticated:
+        userid = User.objects.get(pk=request.user.id)
+        event = get_object_or_404(Event, pk=pk)
+        if request.method =="POST":
+            form = EventCommentForm(request.POST)
+            if form.is_valid():
+                EventComment.objects.create(eventid=event, author=userid, 
+                                            event_comment=form.cleaned_data['event_comment']) 
+                
+                return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+            else:
+                return redirect(reverse('index'))
+        else:
+            return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
+    else:
+        return redirect(reverse('index'))
 
 def event_like(request, pk):
     """
@@ -97,7 +107,6 @@ def event_like(request, pk):
     given like on event
     """
     if request.user.is_authenticated:
-        users = User.objects.all()
         eventid = Event.objects.get(pk=pk)
         userid = User.objects.get(pk=request.user.id)
     
@@ -106,17 +115,12 @@ def event_like(request, pk):
             for like in likes:
                 if like.EventLikedBy == userid:
                     EventLike.objects.filter(EventLikeId=eventid, EventLikedBy=userid).delete()
-                    thumb = False
                 else:
                     EventLike.objects.create(EventLikeId=eventid, EventLikedBy=userid) 
-                    thumb = True
         else:
             EventLike.objects.create(EventLikeId=eventid, EventLikedBy=userid)
-            thumb = True
-        likes = EventLike.objects.filter(EventLikeId=pk)
         return HttpResponseRedirect(reverse('event_detail', args=(pk,)))
     else:
-        messages.success(request, "You are supposed to be logged in to like that!")
         return redirect(reverse('index'))
 
 def event_join(request, pk):
@@ -149,13 +153,19 @@ def event_join(request, pk):
         return redirect(reverse('index'))
 
 def delete_event(request, pk):
-    event = get_object_or_404(Event, pk=pk)
-    event.delete()
-    return redirect(reverse('get_events'))
-
+    if request.user.is_authenticated:
+        event = get_object_or_404(Event, pk=pk)
+        event.delete()
+        return redirect(reverse('get_events'))
+    else:
+        return redirect(reverse('index'))
+        
 def delete_comment(request, pk):
-    eventcomment = EventComment.objects.get(pk=pk)
-    event = eventcomment.eventid
-    eventid = event.id
-    eventcomment.delete()
-    return HttpResponseRedirect(reverse('event_detail', args=(eventid,)))
+    if request.user.is_authenticated:
+        eventcomment = EventComment.objects.get(pk=pk)
+        event = eventcomment.eventid
+        eventid = event.id
+        eventcomment.delete()
+        return HttpResponseRedirect(reverse('event_detail', args=(eventid,)))
+    else:
+        return redirect(reverse('index'))

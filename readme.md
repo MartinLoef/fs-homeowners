@@ -165,7 +165,7 @@ Testing the site has been ongoing from the very start, with each and every addit
 [**Travis CI**](https://travis-ci.org/).  
 In my opinion every aspect of the site was extensively manually tested.
 
-[**See Deployment.md file**](https://github.com/MartinLoef/fs-homeowners/blob/master/manual_test.md).<br>
+[**See Manual_test.md file**](https://github.com/MartinLoef/fs-homeowners/blob/master/manual_test.md).<br>
 
 ### Scaling on the different browsers / devices
 The site has been tested on multiple environments:  
@@ -186,7 +186,7 @@ These bugs were correct along the way the site progressed and after posting, vie
 
 After deploying to Heroku i found out that i had 2 different MEDIA_URL's defined. Which gave me some headache before i found that.
 
-The question actually isare these things really bugs or just extra knowledge?
+The question actually is: are these things really bugs or just extra knowledge?
 
 ## Deployment
 [**See Deployment.md file**](https://github.com/MartinLoef/fs-homeowners/blob/master/deployment.md).<br>
