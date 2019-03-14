@@ -19,7 +19,10 @@ from events.models import Event, EventComment
 # Create your views here.
 def index(request):
     """return index.html"""
-    return render(request, "index.html")
+    if request.user.is_authenticated:
+        return redirect(reverse('overview'))
+    else:
+        return render(request, "index.html")
 
 @login_required
 def overview(request):
