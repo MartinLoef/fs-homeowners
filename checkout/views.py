@@ -22,92 +22,96 @@ def checkout(request):
     Validation and processing of the form(s) filled out
     within the checkout submission.
     """
-    if request.method=='POST':
-        order_form = OrderForm(request.POST)
-        payment_form = PaymentForm(request.POST)
-        if order_form.is_valid() and payment_form.is_valid():
-            order = order_form.save(commit=False)
-            order.date = timezone.now()
-            order.user = User.objects.get(pk=request.user.id) 
-            order.save()
-            saved_order = get_object_or_404(Order, pk=order.id)
-            
-            cart = request.session.get('cart', {})
-            total = 0
-            for id, quantity in cart.items():
-                event = get_object_or_404(Event, pk=id)
-                total_item_price = quantity * event.price
-                total += quantity * event.price
-                order_item = OrderItem(
-                    order = order,
-                    event = event,
-                    quantity = quantity,
-                    total_item_price = total_item_price,
-                    )
-                order_item.save()
-
-            try:
-                customer = stripe.Charge.create(
-                    amount = int(total * 100),
-                    currency = "EUR",
-                    description = order_form.cleaned_data['email_address'],
-                    card = payment_form.cleaned_data['stripe_id'],
-                    )
-            except stripe.error.CardError:
-                messages.error(request, 
-                    'Your payment failed, your card was declined.'
-                    )
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            order_form = OrderForm(request.POST)
+            payment_form = PaymentForm(request.POST)
+            if order_form.is_valid() and payment_form.is_valid():
+                order = order_form.save(commit=False)
+                order.date = timezone.now()
+                order.user = User.objects.get(pk=request.user.id) 
+                order.save()
+                saved_order = get_object_or_404(Order, pk=order.id)
                 
-            if customer.paid:
+                cart = request.session.get('cart', {})
+                total = 0
+                for id, quantity in cart.items():
+                    event = get_object_or_404(Event, pk=id)
+                    total_item_price = quantity * event.price
+                    total += quantity * event.price
+                    order_item = OrderItem(
+                        order = order,
+                        event = event,
+                        quantity = quantity,
+                        total_item_price = total_item_price,
+                        )
+                    order_item.save()
+    
                 try:
-                    order_items = OrderItem.objects.filter(order=saved_order)
-                    site = get_current_site(request)
-                    message = render_to_string(
-                        'confirmation.html',{
-                            'order':saved_order,
-                            'order_items':order_items,
-                            'total': total,
-                            'site':site.domain,
-                        })
-                    mail_subject = 'Thank you for your order'
-                    email_to = order_form.cleaned_data['email_address']
-                    email = EmailMessage(mail_subject, message, to=[email_to])
-                    email.content_subtype = 'html'
-                    email.send()
-                except BadHeaderError:
-                    return HttpResponse('Invalid header found.')
-                
-                messages.error(request, 
-                    'Your order has been placed.'
-                    + ' A confirmation email should arrive shortly.')
-                request.session['cart'] = {}
-                
-                return redirect(reverse('get_events'))
+                    customer = stripe.Charge.create(
+                        amount = int(total * 100),
+                        currency = "EUR",
+                        description = order_form.cleaned_data['email_address'],
+                        card = payment_form.cleaned_data['stripe_id'],
+                        )
+                except stripe.error.CardError:
+                    messages.error(request, 
+                        'Your payment failed, your card was declined.'
+                        )
+                    
+                if customer.paid:
+                    try:
+                        order_items = OrderItem.objects.filter(order=saved_order)
+                        site = get_current_site(request)
+                        message = render_to_string(
+                            'confirmation.html',{
+                                'order':saved_order,
+                                'order_items':order_items,
+                                'total': total,
+                                'site':site.domain,
+                            })
+                        mail_subject = 'Thank you for your order'
+                        email_to = order_form.cleaned_data['email_address']
+                        email = EmailMessage(mail_subject, message, to=[email_to])
+                        email.content_subtype = 'html'
+                        email.send()
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    
+                    messages.error(request, 
+                        'Your order has been placed.'
+                        + ' A confirmation email should arrive shortly.')
+                    request.session['cart'] = {}
+                    
+                    return redirect(reverse('get_events'))
+                else:
+                    messages.error(request, 
+                        'Unable to take payment at this time, '
+                        + 'please try again later')
             else:
                 messages.error(request, 
-                    'Unable to take payment at this time, '
-                    + 'please try again later')
+                    'We were unable to take a payment with the card you put in')
         else:
-            messages.error(request, 
-                'We were unable to take a payment with the card you put in')
+            payment_form = PaymentForm()
+            order_form = OrderForm()
+            
+        return render(request, 'checkout.html', {
+            'order_form': order_form, 
+            'payment_form':payment_form, 
+            'stripe_publishable':settings.STRIPE_PUBLISHABLE}
+            )
     else:
-        payment_form = PaymentForm()
-        order_form = OrderForm()
-        
-    return render(request, 'checkout.html', {
-        'order_form': order_form, 
-        'payment_form':payment_form, 
-        'stripe_publishable':settings.STRIPE_PUBLISHABLE}
-        )
+        return redirect(reverse('index'))
 
 def orderhistory(request):
-    Userid = User.objects.get(pk=request.user.id)
-    uid = Userid.id
-    Orders = OrderItem.objects.all()
-    count = 0
-    for Order in Orders:
-        if Order.order.user == Userid:
-            print("match")
-            count += 1
-
-    return render(request, "orderhistory.html", {'Orders': Orders, "count": count })
+    if request.user.is_authenticated:    
+        Userid = User.objects.get(pk=request.user.id)
+        Orders = OrderItem.objects.all()
+        count = 0
+        for Order in Orders:
+            if Order.order.user == Userid:
+                print("match")
+                count += 1
+        return render(request, "orderhistory.html", {'Orders': Orders, "count": count })
+    else:
+        return redirect(reverse('index'))
