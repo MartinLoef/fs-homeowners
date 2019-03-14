@@ -113,10 +113,8 @@ def create_or_edit_blog(request, pk=None):
         form = BlogPostForm(request.POST, request.FILES, instance=blog)
         bp_form = form.save(commit=False)
         bp_form.author = User.objects.get(pk=request.user.id) 
-
-        if bp_form.is_valid:
-            bp_form.save()
-            return redirect(get_blogs)
+        bp_form.save()
+        return redirect(get_blogs)
     else:
 
         form = BlogPostForm(instance=blog)

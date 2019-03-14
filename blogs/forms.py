@@ -4,7 +4,7 @@ from .models import Blog, BlogComment
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = Blog
-        exclude = ["authorid", "views"]
+        exclude = ["author", "views"]
         
         
 class BlogCommentForm(forms.Form):
