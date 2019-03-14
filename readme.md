@@ -88,7 +88,7 @@ Herunder an impression how the database should look like.
 It is purely an impression how it should be connected to each other.
 Please dont hang me up on the relations(Foreign keys etc) visible in this picture because it wasn;t the goal to make a perfect DB schema map, but just as a mockup.
 
-<img src="https://github.com/MartinLoef/fs-homeowners/blob/master/readme_screenshots/db_schema/db_schema.png" width=100%  alt="Architecture">
+<img src="https://github.com/MartinLoef/fs-homeowners/blob/master/readme_screenshots/db_schema/db_schema_full.png" width=100%  alt="Architecture">
 
 
 ## Wireframess
