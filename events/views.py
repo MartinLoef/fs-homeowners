@@ -22,18 +22,15 @@ def create_or_edit_event(request, pk=None):
             formtype = "Edit an Event"
         
         if request.method =="POST":
-            print("form is a post")
             
             form = EventPostForm(request.POST, request.FILES, instance=event)
             ep_form = form.save(commit=False)
             ep_form.author = User.objects.get(pk=request.user.id) 
             if not ep_form.event_image:
                 ep_form.event_image = "images/default-event.png"
-            
             ep_form.save()
             return redirect(get_events)
         else:
-            print("form is a get")
             form = EventPostForm(instance=event)
         return render(request, "eventpostform.html", {'form': form, 'formtype': formtype})
     else:

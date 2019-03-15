@@ -110,7 +110,6 @@ def orderhistory(request):
         count = 0
         for Order in Orders:
             if Order.order.user == Userid:
-                print("match")
                 count += 1
         return render(request, "orderhistory.html", {'Orders': Orders, "count": count })
     else:

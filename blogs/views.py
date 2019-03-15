@@ -83,7 +83,6 @@ def blogpost_comment(request, pk):
         userid = User.objects.get(pk=request.user.id)
         if request.method =="POST":
             form = BlogCommentForm(request.POST)
-            print(form)
             if form.is_valid():
                 userid = User.objects.get(pk=request.user.id)
                 blog = get_object_or_404(Blog, pk=pk)
