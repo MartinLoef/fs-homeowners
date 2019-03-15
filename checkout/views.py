@@ -104,6 +104,10 @@ def checkout(request):
         return redirect(reverse('index'))
 
 def orderhistory(request):
+    """
+    get the orders to show in the order history
+    only from the session user
+    """
     if request.user.is_authenticated:    
         Userid = User.objects.get(pk=request.user.id)
         Orders = OrderItem.objects.all()

@@ -45,7 +45,6 @@ def blog_like(request, pk):
 
         return HttpResponseRedirect(reverse('blog_detail', args=(pk,)))
     else:
-        messages.success(request, "You are supposed to be logged in to like that!")
         return redirect(reverse('index'))
         
 def blog_detail(request, pk):
