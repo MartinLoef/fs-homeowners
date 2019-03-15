@@ -114,6 +114,9 @@ def create_or_edit_blog(request, pk=None):
             form = BlogPostForm(request.POST, request.FILES, instance=blog)
             bp_form = form.save(commit=False)
             bp_form.author = User.objects.get(pk=request.user.id) 
+            
+            if not bp_form.blog_image:
+                bp_form.blog_image = "images/blog-default.png"
             bp_form.save()
             return redirect(get_blogs)
         else:

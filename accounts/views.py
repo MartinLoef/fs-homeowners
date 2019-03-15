@@ -108,7 +108,7 @@ def registration(request):
 
 def accounts(request):
     if request.user.is_authenticated:
-        users = User.objects.all()
+        users = User.objects.exclude(pk=1)
         fields = User._meta.fields
         return render(request, "accounts.html", {'users': users, 'fields': fields})
     else:
