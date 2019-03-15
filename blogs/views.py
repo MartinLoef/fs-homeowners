@@ -79,6 +79,10 @@ def blog_detail(request, pk):
         return redirect(reverse('index'))
 
 def blogpost_comment(request, pk):
+    """
+    function to create a comment on 
+    a blog
+    """
     if request.user.is_authenticated:
         userid = User.objects.get(pk=request.user.id)
         if request.method =="POST":
@@ -127,6 +131,9 @@ def create_or_edit_blog(request, pk=None):
         return redirect(reverse('index'))
 
 def delete_blog(request, pk):
+    """
+    function to delete a blog
+    """
     if request.user.is_authenticated:
         blog = get_object_or_404(Blog, pk=pk)
         blog.delete()
@@ -135,6 +142,10 @@ def delete_blog(request, pk):
         return redirect(reverse('index'))
         
 def delete_blog_comment(request, pk):
+    """
+    function to delete a comment 
+    on a specific blog
+    """
     if request.user.is_authenticated:
         blogcomment = BlogComment.objects.get(pk=pk)
         blog = blogcomment.blogid

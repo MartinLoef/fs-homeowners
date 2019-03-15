@@ -38,7 +38,10 @@ def create_or_edit_event(request, pk=None):
         return redirect(reverse('index'))
         
 def get_events(request):
-    """eventposts.html"""
+    """
+    show eventposts.html
+    with all events
+    """
     if request.user.is_authenticated:
         events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
         return render(request, "eventposts.html", {'events': events})
@@ -84,6 +87,10 @@ def event_detail(request, pk):
         return redirect(reverse('index'))
 
 def event_comment(request, pk):
+    """
+    function to save a comment on
+    a specific event
+    """
     if request.user.is_authenticated:
         userid = User.objects.get(pk=request.user.id)
         event = get_object_or_404(Event, pk=pk)
@@ -153,6 +160,10 @@ def event_join(request, pk):
         return redirect(reverse('index'))
 
 def delete_event(request, pk):
+    """ 
+    function to delete a specific
+    event
+    """
     if request.user.is_authenticated:
         event = get_object_or_404(Event, pk=pk)
         event.delete()
@@ -161,6 +172,10 @@ def delete_event(request, pk):
         return redirect(reverse('index'))
         
 def delete_comment(request, pk):
+    """
+    function to delete a comment from
+    a specific event
+    """
     if request.user.is_authenticated:
         eventcomment = EventComment.objects.get(pk=pk)
         event = eventcomment.eventid

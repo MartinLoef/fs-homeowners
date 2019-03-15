@@ -18,14 +18,18 @@ from events.models import Event, EventComment
 
 # Create your views here.
 def index(request):
-    """return index.html"""
+    """return index.html if user is not in session
+    if in session show overview page"""
     if request.user.is_authenticated:
         return redirect(reverse('overview'))
     else:
         return render(request, "index.html")
 
 def overview(request):
-    """return overview.html"""
+    """return overview.html
+    show latest blog, newest events
+    and upcoming next 5 events
+    """
     if request.user.is_authenticated:
         blogs = Blog.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
         events = Event.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')[:1]
@@ -107,6 +111,10 @@ def registration(request):
         return redirect(reverse('index'))
 
 def accounts(request):
+    """
+    show all acounts from the database
+    exclude the admin account
+    """
     if request.user.is_authenticated:
         users = User.objects.exclude(pk=1)
         fields = User._meta.fields
@@ -115,6 +123,10 @@ def accounts(request):
         return redirect(reverse('index'))
 
 def user_suspend(request, pk):
+    """
+    function to suspend a user_activate
+    makes in impossible to login
+    """
     if request.user.is_authenticated:
         if request.user.is_staff:
             userid = User.objects.get(pk=pk)
@@ -129,6 +141,9 @@ def user_suspend(request, pk):
         return redirect(reverse('index'))
 
 def user_activate(request, pk):
+    """
+    reactivate an suspended user
+    """
     if request.user.is_authenticated:
         if request.user.is_staff:
             userid = User.objects.get(pk=pk)
