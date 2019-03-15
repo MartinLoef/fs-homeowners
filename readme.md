@@ -91,8 +91,8 @@ Please dont hang me up on the relations(Foreign keys etc) visible in this pictur
 <img src="https://github.com/MartinLoef/fs-homeowners/blob/master/readme_screenshots/db_schema/db_schema_full.png" width=100%  alt="Architecture">
 
 
-## Wireframess
-For user stories and wireframe mockups created as part of this project, see the [**Word document**]
+## Wireframess/mockups
+For user stories and wireframe mockups created as part of this project, see the [**folder in root**](https://github.com/MartinLoef/fs-homeowners/blob/master/readme_screenshots/mockups)
 
 ## Features
 ### Existing Features
